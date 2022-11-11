@@ -1,6 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 import Assignment from './models/Assignment'
+import Task from './models/Task';
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
@@ -19,5 +20,16 @@ export class AppController {
     ];
 
     return assignments;
+  }
+
+  @Get("getAllTasksForAssignment")
+  getAllTasksForAssignment(): Task[]{
+    let tasks: Task[] = [
+      new Task(1,"TaskName1","Description1",new Date(), new Date(), new Date(), "status", 1),
+      new Task(2,"TaskName1","Description1",new Date(), new Date(), new Date(), "status", 1),
+      new Task(3,"TaskName1","Description1",new Date(), new Date(), new Date(), "status", 1),
+    ];
+
+    return tasks;
   }
 }
