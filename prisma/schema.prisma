@@ -6,15 +6,31 @@ generator client {
 }
 
 model Board {
-  id String @id @unique
-
+  id        String      @id 
+  name      String 
+  owner     String
 }
 
-model  {
-    id String @id @unique
+model Assignment {
+  id String @id 
+  canvasId Int
+  boardId String
 }
+
+model Tasks {
+    id String @id 
+    status String
+    name String
+    assignmentID String
+}
+
+
+
+
+
+
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }

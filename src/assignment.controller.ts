@@ -3,7 +3,7 @@ import { AppService } from './app.service';
 import Assignment from './models/Assignment'
 import Task from './models/Task';
 import Canvas from './canvas/canvas'
-import { IdBody } from './IdBody';
+import { IdBody } from './Bodies/IdBody';
 @Controller("Assignment")
 export class AssignmentController {
   constructor(private readonly canvasService: Canvas) {}

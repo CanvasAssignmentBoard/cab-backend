@@ -3,6 +3,7 @@ import { AppService } from './app.service';
 import Assignment from './models/Assignment'
 import Task from './models/Task';
 import Canvas from './canvas/canvas'
+import {main} from './Data/db'
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
@@ -14,15 +15,11 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get("getAllAssignmentsForCourses")
+  @Get("test")
   getAllAssignmentsForCourses(): Assignment[]{
-    let assignments: Assignment[] = [
-      new Assignment(1,"AssignmentName1","Description1",new Date(), new Date(), new Date(), 1, 1),
-      new Assignment(2,"AssignmentName2","Description2",new Date(), new Date(), new Date(), 2, 2),
-      new Assignment(3,"AssignmentName3","Description3",new Date(), new Date(), new Date(), 3, 3),
-    ];
+    main();
 
-    return assignments;
+    return;
   }
 
   @Get("getAllTasksForAssignment")

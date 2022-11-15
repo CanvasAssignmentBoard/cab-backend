@@ -5,10 +5,11 @@ import Canvas from './canvas/canvas';
 import { AssignmentController } from './assignment.controller';
 import { CourseController } from './course.controller';
 import { TaskController } from './task.controller';
+import { BoardController } from './board.controller';
 
 @Module({
   imports: [],
-  controllers: [AppController, CourseController, TaskController, AssignmentController],
+  controllers: [AppController, CourseController, TaskController, AssignmentController, BoardController],
   providers: [AppService, Canvas],
 })
 export class AppModule {}
