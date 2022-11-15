@@ -3,5 +3,5 @@ import ICourse from "src/models/ICourse"
 
 interface ICanvas{
     GetCourses() : ICourse[];
-    GetAssignments() : IAssignment[];
+    GetAssignments(courseId : number) : IAssignment[];
 }export default ICanvas;
