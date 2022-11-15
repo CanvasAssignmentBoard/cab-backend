@@ -10,7 +10,7 @@ export class AppController {
   @Get()
   getHello(): string {
     const test : Canvas = new Canvas();
-    test.GetCourses();
+    test.GetAssignments(12798);
     return this.appService.getHello();
   }
 

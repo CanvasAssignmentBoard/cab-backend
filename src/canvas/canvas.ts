@@ -7,61 +7,62 @@ import Task from 'src/models/Task';
 import fetch from "node-fetch";
 import axios from 'axios';
 import { test } from "./ICourseReq"
+import { ReqCourse, ReqAssignment } from './Types';
+
 function request<TResponse>(
-    url: string,
-    // `RequestInit` is a type for configuring 
-    // a `fetch` request. By default, an empty object.
-    config: RequestInit = {
-        headers:{
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer 2464~Pr6MNqoOpRcKLcYqjeoUpj11xTc8Fjj0v9Uo9X1cPhFKxOJ8k8yvBmRLUOzK5nF3'
-        }
-    }
-     
-  // This function is async, it will return a Promise:
-  ): Promise<TResponse> {
-      
-    // Inside, we call the `fetch` function with 
-    // a URL and config given:
-    return fetch(url, config)
-      // When got a response call a `json` method on it
-      .then((response) => {
-        console.log(response.json());
-        response.json();
-        //console.log(response);
-
-    })
-      // and return the result data.
-      .then((data) => {
-
-    });
-      
-      // We also can use some post-response
-      // data-transformations in the last `then` clause.
+  url: string,
+  config: RequestInit = {
+    headers:   {'Content-Type': 'application/json', 'Authorization': 'Bearer 2464~Pr6MNqoOpRcKLcYqjeoUpj11xTc8Fjj0v9Uo9X1cPhFKxOJ8k8yvBmRLUOzK5nF3'}
   }
+): Promise<TResponse> {
+  return fetch(url, config)
+    .then((response) => response.json())
+    .then((data) => data as TResponse[]);
+}
 
 class Canvas implements ICanvas {
     
 
     
     GetCourses() : ICourse[]{
-        
-        fetch('https://fhict.instructure.com/api/v1/courses',{
-            method: 'get',
-            headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer 2464~Pr6MNqoOpRcKLcYqjeoUpj11xTc8Fjj0v9Uo9X1cPhFKxOJ8k8yvBmRLUOzK5nF3'
+      let courses : Course[] = [];
+      request<ReqCourse>('https://fhict.instructure.com/api/v1/courses').then(course => {
+
+        let i : number = 0;
+        while(true){
+          if(course[i] == undefined){
+            break;
+          }
+          console.log(course[i].name);
+          courses.push(new Course(course[i].id, course[i].name));
+          i++;
         }
-        }).then(data => {
-            let output = data.json();
-            console.log(data)
-        })
-        
-        let courses : Course[] = [];
         return courses;
+      });
+      return courses;
+        
     }
-    GetAssignments() : IAssignment[]{
-        let Assignment : Assignment[] = [];
-        return Assignment;
+    
+    GetAssignments(courseId : number) : IAssignment[]{
+        let assignments : Assignment[] = [];
+        request<ReqAssignment>('https://fhict.instructure.com/api/v1/courses/' + courseId + '/assignments').then(assignment => {
+
+        let i : number = 0;
+        while(true){
+          if(assignment[i] == undefined){
+            break;
+          }
+          
+          assignments.push(new Assignment(assignment[i].id, assignment[i].name, assignment[i].description, assignment[i].created_at, assignment[i].updated_at, assignment[i].due_at, assignment[i].course_id, assignment[i].submission));
+          console.log(assignments);
+          i++;
+        }
+        return assignments;
+      });
+      return assignments;
     }
+
+
     constructor(){
 
     }
