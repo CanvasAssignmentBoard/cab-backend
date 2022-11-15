@@ -1,31 +1,22 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Body } from '@nestjs/common';
 import { AppService } from './app.service';
 import Assignment from './models/Assignment'
 import Task from './models/Task';
 import Canvas from './canvas/canvas'
-@Controller()
+import { IdBody } from './IdBody';
+@Controller("Assignment")
 export class AssignmentController {
-  constructor(private readonly appService: AppService) {}
-
-  @Get("GetAll")
-  getAllAssignmentsForCourses(): Assignment[]{
-    let assignments: Assignment[] = [
-      new Assignment(1,"AssignmentName1","Description1",new Date(), new Date(), new Date(), 1, 1),
-      new Assignment(2,"AssignmentName2","Description2",new Date(), new Date(), new Date(), 2, 2),
-      new Assignment(3,"AssignmentName3","Description3",new Date(), new Date(), new Date(), 3, 3),
-    ];
-
-    return assignments;
-  }
+  constructor(private readonly canvasService: Canvas) {}
 
   @Get()
-  getAllAssignmentsById(): Assignment[]{
-    let assignments: Assignment[] = [
-      new Assignment(1,"AssignmentName1","Description1",new Date(), new Date(), new Date(), 1, 1),
-      new Assignment(2,"AssignmentName2","Description2",new Date(), new Date(), new Date(), 2, 2),
-      new Assignment(3,"AssignmentName3","Description3",new Date(), new Date(), new Date(), 3, 3),
-    ];
-
+  async getAllAssignmentsForCourses(@Body() body: IdBody){
+    let assignments: Assignment[] = []
+    for (let i = 0; i < body.id.length; i++) {
+    {
+      assignments = assignments.concat(await this.canvasService.GetAssignments(body.id[i]));
+      console.log(assignments)
+    }
     return assignments;
+    }
   }
 }

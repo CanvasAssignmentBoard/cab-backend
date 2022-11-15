@@ -6,17 +6,11 @@ import Canvas from './canvas/canvas'
 import Course from './models/Course';
 @Controller("course")
 export class CourseController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly canvasService: Canvas) {}
 
   @Get()
-  getAllCourses(): Course[]{
-    let courses: Course[] = [
-      new Course(1,"CourseName1"),
-      new Course(2,"CourseName2"),
-      new Course(3,"CourseName3"),
-    ];
-
-    return courses;
+  async getAllCourses(){
+     return await this.canvasService.GetCourses();
   }
 
 }
