@@ -17,6 +17,19 @@ export async function CreateBoard(_name: string, _id : string, _owner : string){
   console.log(await prisma.board.findMany());
 }
 
+export async function GetCoursesOfBoard(_boardID : string){
+  return await prisma.assignment.findMany({
+    where:{
+      boardId: {
+        equals: _boardID
+      }
+    }
+  })
+  console.log(await prisma.assignment.findMany());
+}
+
+
+
 export async function CreateAssignment(_id : string, _boardID : string, _canvasId: number){
   await prisma.assignment.create({
     data: {
@@ -28,11 +41,41 @@ export async function CreateAssignment(_id : string, _boardID : string, _canvasI
   console.log(await prisma.assignment.findMany());
 }
 
+export async function LinkBoardToCourse(_boardID : string, _course : number){
+  return await prisma.course.create({
+    data: {
+      boardId: _boardID,
+      canvasId: _course
+    }
+  })
+}
+
 export async function GetAssignments(_boardID : string){
   return await prisma.assignment.findMany( {
     where:{
       boardId: {
         equals: _boardID
+      }
+    }
+  })
+}
+
+export async function CreateTasks(Id : string, AssignmentId : string, Status : string, Name : string){
+  prisma.tasks.create({
+   data:{
+    id: Id,
+    status: Status,
+    name: Name,
+    assignmentID: AssignmentId
+   }
+  })
+}
+
+export async function GetTasks(Id : string){
+  return await prisma.tasks.findMany({
+    where:{
+      assignmentID: {
+        equals: Id
       }
     }
   })

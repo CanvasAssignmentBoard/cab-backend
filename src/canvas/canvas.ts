@@ -10,7 +10,7 @@ import { Injectable } from '@nestjs/common';
 async function request<TResponse>(
   url: string,
   config: RequestInit = {
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' }
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer 2464~7b2ZQvkRTirCkFVyiQ4T4KCrLZv4FKynkCCUINJzbgPydHnQ4krPzglEZCtZYrCe' }
   }
 ): Promise<TResponse> {
   return fetch(url, config)
@@ -50,6 +50,10 @@ class Canvas {
     return assignments;
   }
 
+  async GetAssignment(id : number, courseId : number): Promise<Assignment>{
+    let data = await request<ReqAssignment>('https://fhict.instructure.com/api/v1/courses/' + courseId + '/assignments/' + id)
+    return new Assignment(data.id, data.name, data.description, data.created_at, data.updated_at, data.due_at, data.course_id, 0)
+  }
 
   constructor() {
 

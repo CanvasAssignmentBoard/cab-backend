@@ -4,13 +4,13 @@ class Assignment implements IAssignment{
     id : number;
     name: string;
     description: string;
-    created_at: Date;
-    updated_at: Date;
-    due_at: Date;
+    created_at: string;
+    updated_at: string;
+    due_at: string;
     course_id: number;
     submission: number;
 
-    constructor(id: number, name: string, description: string, created_at: Date, updated_at: Date, due_at: Date, course_id: number, submission: number){
+    constructor(id: number, name: string, description: string, created_at: string, updated_at: string, due_at: string, course_id: number, submission: number){
         this.name = name;
         this.id = id;
         this.description = description;
