@@ -11,6 +11,11 @@ model Board {
   owner     String
 }
 
+model Course {
+  canvasId Int @id
+  boardId String
+}
+
 model Assignment {
   id String @id 
   canvasId Int
