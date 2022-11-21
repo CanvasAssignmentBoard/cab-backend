@@ -35,12 +35,12 @@ export class BoardController {
     let assignments : Assignment[] = [];
     for(let D of await GetCoursesOfBoard(boardID)){
       for(let Y of await GetAssignments(boardID)){
-        assignments.push(await this.canvasService.GetAssignment(Y.canvasId, ));
+        assignments.push(await this.canvasService.GetAssignment(Y.canvasId, D));
       }
     }
     
 
-    return await this.canvasService.GetAssignments();
+    return assignments;
   }
 
   @Get("All")
