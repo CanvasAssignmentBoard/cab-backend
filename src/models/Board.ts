@@ -1,28 +1,9 @@
-import { ICourse } from './Course';
-import { IAssignment } from './Assignment';
-interface IBoard {
-  id: number;
-  boardname: string;
-  courses: ICourse[];
-  assignments: IAssignment[];
-}
+import IAssignment from "./IAssignment";
+import ICourse from "./Course";
 
-class Board implements IBoard {
-  id: number;
-  boardname: string;
-  courses: ICourse[];
-  assignments: IAssignment[];
-
-  constructor(
-    id: number,
-    boardname: string,
-    courses: ICourse[],
-    assignments: IAssignment[],
-  ) {
-    this.boardname = boardname;
-    this.id = id;
-    this.courses = courses;
-    this.assignments = assignments;
-  }
-}
-export default Board;
+class Board{
+    id : string;
+    name : string;
+    courses: ICourse[];
+    assignments : /IAssignment[];
+} export default Board;

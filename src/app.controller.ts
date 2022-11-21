@@ -4,12 +4,16 @@ import Assignment from './models/Assignment';
 import Task from './models/Task';
 import Course from './models/Course';
 import Board from './models/Board';
+import Canvas from './canvas/canvas'
+import {main} from './Data/db'
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
   getHello(): string {
+    const test : Canvas = new Canvas();
+    test.GetAssignments(12798);
     return this.appService.getHello();
   }
 
