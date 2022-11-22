@@ -1,4 +1,4 @@
-import { Controller, Get, Body } from '@nestjs/common';
+import {Controller, Get, Body, Post, Req, Res} from '@nestjs/common';
 import { AppService } from './app.service';
 import Assignment from './models/Assignment'
 import Task from './models/Task';
@@ -30,17 +30,18 @@ export class BoardController {
     return board;
   }
 
-  @Get()
-  async getBoardById(@Body() boardID: string){
+  @Post()
+  async getBoardById(@Req() req, @Res() res){
+    let boardID = req.body.boardID;
     let assignments : Assignment[] = [];
     for(let D of await GetCourses(boardID)){
       for(let Y of await GetAssignments(boardID)){
         assignments.push(await this.canvasService.GetAssignment(Y.canvasId, D.canvasId));
       }
     }
-    
 
-    return assignments;
+    console.log(assignments);
+    return res.json(assignments);
   }
 
   @Get("All")
