@@ -3,7 +3,7 @@ import { AppService } from './app.service';
 import Assignment from './models/Assignment'
 import Task from './models/Task';
 import Canvas from './canvas/canvas'
-import { CreateBoard, CreateAssignment, GetAllBoard, GetAssignments, GetCoursesOfBoard, LinkBoardToCourse } from './Data/db';
+import { CreateBoard, CreateAssignment, GetAllBoard, GetAssignments, GetCourses, LinkBoardToCourse } from './Data/db';
 import { BoardCreateBody } from './Bodies/BoardCreateBody';
 import { randomUUID } from 'crypto';
 import Board from './models/Board';
@@ -33,9 +33,9 @@ export class BoardController {
   @Get()
   async getBoardById(@Body() boardID: string){
     let assignments : Assignment[] = [];
-    for(let D of await GetCoursesOfBoard(boardID)){
+    for(let D of await GetCourses(boardID)){
       for(let Y of await GetAssignments(boardID)){
-        assignments.push(await this.canvasService.GetAssignment(Y.canvasId, D));
+        assignments.push(await this.canvasService.GetAssignment(Y.canvasId, D.canvasId));
       }
     }
     
