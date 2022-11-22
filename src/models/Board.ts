@@ -1,9 +1,7 @@
-import IAssignment from "./IAssignment";
-import ICourse from "./Course";
+import Assignment from "./Assignment";
 
 class Board{
     id : string;
     name : string;
-    courses: ICourse[];
-    assignments : /IAssignment[];
+    assignments : Assignment[];
 } export default Board;

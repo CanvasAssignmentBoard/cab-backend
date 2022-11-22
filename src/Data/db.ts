@@ -91,6 +91,16 @@ export async function GetAllBoard(_owner : string){
   })
 }
 
+export async function GetCourses(_BoardID : string) {
+  return await prisma.course.findMany({
+    where:{
+      boardId:{
+        equals: _BoardID
+      }
+    }
+  })
+}
+
 main()
   .then(async () => {
     await prisma.$disconnect()
