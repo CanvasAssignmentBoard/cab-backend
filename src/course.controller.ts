@@ -1,16 +1,18 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import Assignment from './models/Assignment'
-import Task from './models/Task';
 import Canvas from './canvas/canvas'
-import Course from './models/Course';
+import ICourseLogic from './Logic/ICourseLogic';
+import CourseLogic from './Logic/CourseLogic';
 @Controller("course")
 export class CourseController {
-  constructor(private readonly canvasService: Canvas) {}
+  courseLogic : ICourseLogic;
+  constructor(private readonly canvasService: Canvas) {
+    this.courseLogic = new CourseLogic(canvasService);
+  }
 
   @Get()
   async getAllCourses(){
-     return await this.canvasService.GetCourses();
+     return await this.courseLogic.GetCourses();
   }
 
 }

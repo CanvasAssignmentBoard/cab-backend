@@ -2,7 +2,7 @@ import IAssignment from "src/models/IAssignment";
 import Course from "src/models/ICourse"
 
 interface ICanvas{
-    GetCourses() : Course[];
-    GetAssignments(courseId : number) : IAssignment[];
-    GetAssignment(id : number) : IAssignment[];
+    GetCourses();
+    GetAssignments(courseId : number);
+    GetAssignment(id : number, courseId : number);
 }export default ICanvas;
