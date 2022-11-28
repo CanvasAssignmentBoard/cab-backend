@@ -19,7 +19,7 @@ async function request<TResponse>(
 }
 
 @Injectable()
-class Canvas {
+class Canvas implements ICanvas {
 
   async GetCourses(): Promise<ICourse[]> {
     let courses: Course[] = [];

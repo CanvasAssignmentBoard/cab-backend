@@ -3,13 +3,15 @@ import { AppService } from './app.service';
 import Assignment from './models/Assignment'
 import Task from './models/Task';
 import Canvas from './canvas/canvas'
-import { GetTasks, CreateTasks } from './Data/db';
 import { CreateTaskBody } from './Bodies/CreateTaskBody';
 import { randomUUID } from 'crypto';
 
 @Controller("Task")
 export class TaskController {
-  constructor(private readonly appService: AppService) {}
+  taskLogic : ITaskLogic;
+  constructor(canvasService: Canvas, dataBaseService : DB) {
+    this.boardLogic = new BoardLogic(canvasService, dataBaseService);); 
+  }
 
   @Get("")
   async getAllTasksForAssignment(@Body() id : string){
