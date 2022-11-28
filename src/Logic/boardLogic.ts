@@ -29,7 +29,7 @@ export class BoardLogic implements IBoardLogic {
       }
     
     
-      async getBoardById(boardID : String){
+      async getBoardById(boardID : string){
         let assignments : Assignment[] = [];
         for(let D of await this.dataBaseService.GetCourses(boardID)){
           for(let Y of await this.dataBaseService.GetAssignments(boardID)){

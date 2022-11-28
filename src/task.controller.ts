@@ -5,22 +5,25 @@ import Task from './models/Task';
 import Canvas from './canvas/canvas'
 import { CreateTaskBody } from './Bodies/CreateTaskBody';
 import { randomUUID } from 'crypto';
+import ITaskLogic from './Logic/ITaskLogic';
+import { TaskLogic } from './Logic/TaskLogic';
+import DB from './Data/db';
 
 @Controller("Task")
 export class TaskController {
   taskLogic : ITaskLogic;
   constructor(canvasService: Canvas, dataBaseService : DB) {
-    this.boardLogic = new BoardLogic(canvasService, dataBaseService);); 
+    this.taskLogic = new TaskLogic(canvasService, dataBaseService); 
   }
 
   @Get("")
   async getAllTasksForAssignment(@Body() id : string){
-    return await GetTasks(id);
+    return await this.taskLogic.GetTasks(id);
   }
 
   @Get("Create")
   async CreateTasksForAssignment(@Body() task : CreateTaskBody){
-    await CreateTasks(randomUUID(), task.AssignmentId, task.Status, task.Name);
+    await this.taskLogic.CreateTask(task);
     return true;
   }
 
