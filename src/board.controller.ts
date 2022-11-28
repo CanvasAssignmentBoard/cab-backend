@@ -10,7 +10,7 @@ import DB from './Data/db';
 export class BoardController {
   boardLogic : IBoardLogic;
   constructor(canvasService: Canvas, dataBaseService : DB) {
-    this.boardLogic = new BoardLogic(canvasService, dataBaseService);); 
+    this.boardLogic = new BoardLogic(canvasService, dataBaseService);
   }
 
   @Get("Create")

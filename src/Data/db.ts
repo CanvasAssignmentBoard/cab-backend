@@ -43,7 +43,7 @@ class DB {
     })
   }
 
-  async DBGetAssignments(_boardID : string){
+  async GetAssignments(_boardID : string){
     return await this.prisma.assignment.findMany( {
       where:{
         boardId: {
