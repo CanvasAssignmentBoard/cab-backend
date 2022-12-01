@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import Canvas from './canvas/canvas';
-import { AssignmentController } from './assignment.controller';
 import { CourseController } from './course.controller';
 import { TaskController } from './task.controller';
 import { BoardController } from './board.controller';
@@ -9,7 +8,7 @@ import DB from './Data/db';
 
 @Module({
   imports: [],
-  controllers: [CourseController, TaskController, AssignmentController, BoardController],
+  controllers: [CourseController, TaskController, BoardController],
   providers: [Prisma, Canvas, DB],
 })
 export class AppModule {}

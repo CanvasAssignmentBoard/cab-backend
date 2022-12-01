@@ -4,6 +4,10 @@ import Prisma from './Prisma';
 
 class DB {
   constructor(private prisma: Prisma) {}
+
+  /* Creates board using the following params
+  ** @param {string}
+  */
   async CreateBoard(_name: string, _id : string, _owner : string){
     await this.prisma.board.create({
       data: {

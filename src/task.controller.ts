@@ -1,4 +1,4 @@
-import { Controller, Get, Body } from '@nestjs/common';
+import { Controller, Get, Body, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import Assignment from './models/Assignment'
 import Task from './models/Task';
@@ -8,7 +8,9 @@ import { randomUUID } from 'crypto';
 import ITaskLogic from './Logic/ITaskLogic';
 import { TaskLogic } from './Logic/TaskLogic';
 import DB from './Data/db';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Task')
 @Controller("Task")
 export class TaskController {
   taskLogic : ITaskLogic;
@@ -16,25 +18,16 @@ export class TaskController {
     this.taskLogic = new TaskLogic(canvasService, dataBaseService); 
   }
 
+  @ApiOperation({ summary :"Get all tasks"})
   @Get("")
   async getAllTasksForAssignment(@Body() id : string){
     return await this.taskLogic.GetTasks(id);
   }
 
-  @Get("Create")
+  @ApiOperation({ summary :"Create a task for an assignment"})
+  @Post("Create")
   async CreateTasksForAssignment(@Body() task : CreateTaskBody){
     await this.taskLogic.CreateTask(task);
     return true;
-  }
-
-  @Get("Filter")
-  getFilteredForAssignment(): Task[]{
-    let tasks: Task[] = [
-      new Task(1,"TaskName1","Description1",new Date(), new Date(), new Date(), "status", 1),
-      new Task(2,"TaskName1","Description1",new Date(), new Date(), new Date(), "status", 1),
-      new Task(3,"TaskName1","Description1",new Date(), new Date(), new Date(), "status", 1),
-    ];
-
-    return tasks;
   }
 }
