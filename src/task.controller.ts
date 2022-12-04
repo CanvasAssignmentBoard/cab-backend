@@ -30,4 +30,11 @@ export class TaskController {
     await this.taskLogic.CreateTask(task);
     return true;
   }
+
+  @ApiOperation({ summary :"Edit task for an assignment"})
+  @Post("Edit")
+  async EditTasksForAssignment(@Body() task : CreateTaskBody){
+    await this.taskLogic.Edit(task);
+    return true;
+  }
 }

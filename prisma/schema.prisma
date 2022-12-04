@@ -7,7 +7,8 @@ generator client {
 
 model Board {
   id        String      @id 
-  name      String 
+  name      String
+  description String 
   owner     String
 }
 
@@ -19,6 +20,7 @@ model Course {
 model Assignment {
   id String @id 
   canvasId Int
+  status String
   boardId String
 }
 
@@ -27,6 +29,8 @@ model Tasks {
     status String
     name String
     assignmentID String
+    createdAt String
+    updatedAt String
 }
 
 
