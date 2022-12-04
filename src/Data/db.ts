@@ -8,12 +8,13 @@ class DB {
   /* Creates board using the following params
   ** @param {string}
   */
-  async CreateBoard(_name: string, _id : string, _owner : string){
+  async CreateBoard(_name: string, _id : string, _owner : string, _description : string){
     await this.prisma.board.create({
       data: {
         name: _name,
         id: _id,
         owner: _owner,
+        description: _description
       }
     })
   }
@@ -33,7 +34,8 @@ class DB {
       data: {
         id: _id,
         canvasId: _canvasId,
-        boardId: _boardID
+        boardId: _boardID,
+        status: "To Do"
       }
     })
   }
@@ -63,8 +65,20 @@ class DB {
       id: Id,
       status: Status,
       name: Name,
-      assignmentID: AssignmentId
+      assignmentID: AssignmentId,
+      createdAt: Date.now().toString(),
+      updatedAt: Date.now().toString()
      }
+    })
+  }
+  async EditTask(Id : string, Status : string, Name : string){
+    this.prisma.tasks.update({
+      where: {
+        id: Id
+      }, data: {
+        status: Status,
+        name: Name,
+      },
     })
   }
 

@@ -13,7 +13,7 @@ export class BoardLogic implements IBoardLogic {
     async CreateBoard(body : BoardCreateBody){
         let board : Board = new Board();
         let boardID = randomUUID();
-        await this.dataBaseService.CreateBoard(body.name, boardID , "owner");
+        await this.dataBaseService.CreateBoard(body.name, boardID , "owner", "board");
         
         board.name = body.name;
         board.id = boardID;
