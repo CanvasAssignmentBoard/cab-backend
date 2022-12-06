@@ -23,7 +23,7 @@ class Canvas implements ICanvas {
 
   async GetCourses(): Promise<ICourse[]> {
     let courses: Course[] = [];
-    let data = await request<ReqCourse>('https://fhict.instructure.com/api/v1/courses');
+    let data = await request<ReqCourse>('https://openmaze.instructure.com/api/v1/courses');
     let i: number = 0;
     while (true) {
       if (data[i] == undefined) {
@@ -37,7 +37,7 @@ class Canvas implements ICanvas {
 
   async GetAssignments(courseId: number): Promise<Assignment[]> {
     let assignments: Assignment[] = [];
-    let data = await request<ReqAssignment>('https://fhict.instructure.com/api/v1/courses/' + courseId + '/assignments')
+    let data = await request<ReqAssignment>('https://openmaze.instructure.com/api/v1/courses/' + courseId + '/assignments')
 
     let i: number = 0;
     while (true) {
@@ -51,8 +51,13 @@ class Canvas implements ICanvas {
   }
 
   async GetAssignment(id : number, courseId : number): Promise<Assignment>{
-    let data = await request<ReqAssignment>('https://fhict.instructure.com/api/v1/courses/' + courseId + '/assignments/' + id)
+    let data = await request<ReqAssignment>('https://openmaze.instructure.com/api/v1/courses/' + courseId + '/assignments/' + id)
     return new Assignment(data.id, data.name, data.description, data.created_at, data.updated_at, data.due_at, data.course_id, 0)
+  }
+
+  async CreateAssignment(courseId : number){
+    let data = await request<ReqAssignment>('https://openmaze.instructure.com/api/v1/courses/' + courseId + '/assignments/')
+    return true;
   }
 
   constructor() {

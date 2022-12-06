@@ -18,7 +18,7 @@ export class TaskLogic implements ITaskLogic {
     }
 
     async Edit(task : CreateTaskBody){
-      await this.dataBaseService.CreateTasks(randomUUID(), task.AssignmentId, task.Status, task.Name);
+      await this.dataBaseService.EditTask(task.AssignmentId, task.AssignmentId, task.Status);
       return true;
     }
   
