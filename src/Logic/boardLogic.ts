@@ -5,6 +5,7 @@ import Board from "../models/Board"
 import Assignment from "../models/Assignment"
 import Canvas from "src/canvas/canvas";
 import IBoardLogic from "./IBoardLogic";
+import { timer } from "rxjs";
 
 export class BoardLogic implements IBoardLogic {
     constructor(private readonly canvasService : Canvas, private readonly dataBaseService : DB){
@@ -12,6 +13,7 @@ export class BoardLogic implements IBoardLogic {
 
     async CreateBoard(body : BoardCreateBody){
         let board : Board = new Board();
+        board.assignments=[];
         let boardID = randomUUID();
         await this.dataBaseService.CreateBoard(body.name, boardID , "owner", "board");
         
@@ -30,13 +32,19 @@ export class BoardLogic implements IBoardLogic {
     
     
       async getBoardById(boardID : string){
-        let assignments : Assignment[] = [];
-        for(let D of await this.dataBaseService.GetCourses(boardID)){
-          for(let Y of await this.dataBaseService.GetAssignments(boardID)){
-            assignments.push(await this.canvasService.GetAssignment(Y.canvasId, D.canvasId));
-          }
+        let board : Board = new Board();
+        board.name = "test";
+        board.assignments=[];        
+  
+        let courses = await this.dataBaseService.GetCourses(boardID);
+        for (let course of courses){
+          let assignments = await this.canvasService.GetAssignments(course.canvasId);
+          for(let assignment of assignments){
+            board.assignments.push(assignment);
+            
+          }      
         }
-        return assignments;
+        return board;
       }
     
     

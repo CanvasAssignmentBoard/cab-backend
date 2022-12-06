@@ -4,4 +4,5 @@ interface ITaskLogic {
     GetTasks(id : string)
     Edit(task : CreateTaskBody)
     CreateTask(task : CreateTaskBody)
+    Delete(id : string)
 } export default ITaskLogic;

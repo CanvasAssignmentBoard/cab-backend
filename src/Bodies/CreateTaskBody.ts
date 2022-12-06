@@ -7,6 +7,9 @@ class CreateTaskBody {
     Status : string;
     @ApiProperty({type: String})  
     Name : string;
+    @ApiProperty({type: String})  
+    DueDate : string;
+    
   }
   
   export { CreateTaskBody };

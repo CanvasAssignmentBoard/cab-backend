@@ -19,7 +19,7 @@ export class TaskController {
     this.assignmentLogic = new AssignmentLogic(canvasService, dataBaseService); 
   }
 
-  @ApiOperation({ summary :"Get assignment"})
+  /*@ApiOperation({ summary :"Get assignment"})
   @Get("")
   async getAllTasksForAssignment(@Body() id : string){
     return await this.taskLogic.GetTasks(id);
@@ -28,6 +28,6 @@ export class TaskController {
   @Post("Create")
   async CreateAssignment(@Body() body : CreateAssignmentBody){
     return await this.taskLogic.GetTasks(id);
-  }
+  }*/
 }
-}
+

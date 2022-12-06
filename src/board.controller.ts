@@ -1,4 +1,4 @@
-import {Controller, Get, Body, Post, Req, Res} from '@nestjs/common';
+import {Controller, Get, Body, Post, Req, Res, Param} from '@nestjs/common';
 import Canvas from './canvas/canvas'
 import { BoardCreateBody } from './Bodies/BoardCreateBody';
 import { BoardLogic } from './Logic/boardLogic';
@@ -18,18 +18,19 @@ export class BoardController {
   @ApiOperation({ summary :"Create a board"})
   @Post("Create")
   async createBoard(@Body() body: BoardCreateBody){
+
     return await this.boardLogic.CreateBoard(body)
   }
 
   @ApiBody({type: String})
   @ApiOperation({ summary :"Get a board using the id"})
-  @Post()
-  async getBoardById(@Req() req, @Res() res){
-    return res.json(await this.boardLogic.getBoardById(req.body.boardID));
+  @Get(":id")
+  async getBoardById(@Param() params){
+    return await this.boardLogic.getBoardById(params.id.toString());
   }
 
   @ApiOperation({ summary :"Get all boards"})
-  @Get("All")
+  @Get("")
   async getAllBoards(){
     return await this.boardLogic.getAllBoards();
   }
