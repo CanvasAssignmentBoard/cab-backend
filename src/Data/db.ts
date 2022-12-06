@@ -59,6 +59,14 @@ class DB {
     })
   }
 
+  async GetAssignment(_id : string){
+    return await this.prisma.assignment.findUnique({
+      where:{
+        id: _id
+      }
+    })
+  }
+
   async CreateTasks(Id : string, AssignmentId : string, Status : string, Name : string){
     this.prisma.tasks.create({
      data:{
