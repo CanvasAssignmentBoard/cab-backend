@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Post } from '@nestjs/common';
+import { Controller, Get, Body, Post, Param, Delete } from '@nestjs/common';
 import { AppService } from './app.service';
 import Assignment from './models/Assignment'
 import Task from './models/Task';
@@ -19,9 +19,10 @@ export class TaskController {
   }
 
   @ApiOperation({ summary :"Get all tasks"})
-  @Get("")
-  async getAllTasksForAssignment(@Body() id : string){
-    return await this.taskLogic.GetTasks(id);
+  @Get(":id")
+  async getAllTasksForAssignment(@Param() params){
+    console.log(params.id)
+    return await this.taskLogic.GetTasks(params.id);
   }
 
   @ApiOperation({ summary :"Create a task for an assignment"})
@@ -34,7 +35,14 @@ export class TaskController {
   @ApiOperation({ summary :"Edit task for an assignment"})
   @Post("Edit")
   async EditTasksForAssignment(@Body() task : CreateTaskBody){
-    await this.taskLogic.Edit(task);
+    
+    return await this.taskLogic.Edit(task);
+  }
+
+  @ApiOperation({ summary :"Delete task for an assignment"})
+  @Delete(":id")
+  async DeleteTasksForAssignment(@Param() params){
+    await this.taskLogic.Delete(params.id);
     return true;
   }
 }

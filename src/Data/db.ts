@@ -1,7 +1,10 @@
+import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client'
+import console from 'console';
 import { randomUUID } from 'crypto'
 import Prisma from './Prisma';
 
+@Injectable()
 class DB {
   constructor(private prisma: Prisma) {}
 
@@ -67,26 +70,35 @@ class DB {
     })
   }
 
-  async CreateTasks(Id : string, AssignmentId : string, Status : string, Name : string){
-    this.prisma.tasks.create({
+  async CreateTasks(_Id : string, _AssignmentId : string, _Status : string, _Name : string, _dueDate: string){
+    await this.prisma.tasks.create({
      data:{
-      id: Id,
-      status: Status,
-      name: Name,
-      assignmentID: AssignmentId,
-      createdAt: Date.now().toString(),
-      updatedAt: Date.now().toString()
+      id: _Id,
+      status: _Status,
+      name: _Name,
+      assignmentID: _AssignmentId,
+      dueAt: _dueDate
      }
     })
   }
-  async EditTask(Id : string, Status : string, Name : string){
-    this.prisma.tasks.update({
+
+  async EditTask(_Id : string, Status : string, Name : string, _dueDate: string){
+    await this.prisma.tasks.update({
       where: {
-        id: Id
+        id: _Id
       }, data: {
         status: Status,
         name: Name,
+        dueAt: _dueDate
       },
+    })
+  }
+
+  async DeleteTask(_Id : string){
+    return await this.prisma.tasks.delete({
+      where:{
+        id: _Id
+      }
     })
   }
 

@@ -29,8 +29,7 @@ model Tasks {
     status String
     name String
     assignmentID String
-    createdAt String
-    updatedAt String
+    dueAt String
 }
 
 

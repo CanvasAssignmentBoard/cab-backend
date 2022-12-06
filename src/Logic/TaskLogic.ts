@@ -13,14 +13,17 @@ export class TaskLogic implements ITaskLogic {
     }
   
     async CreateTask(task : CreateTaskBody){
-      await this.dataBaseService.CreateTasks(randomUUID(), task.AssignmentId, task.Status, task.Name);
-      return true;
+      return await this.dataBaseService.CreateTasks(randomUUID(), task.AssignmentId, task.Status, task.Name, task.DueDate);
     }
 
     async Edit(task : CreateTaskBody){
-      await this.dataBaseService.EditTask(task.AssignmentId, task.AssignmentId, task.Status);
-      return true;
+      
+      return await this.dataBaseService.EditTask(task.AssignmentId, task.Status, task.Name, task.DueDate);
     }
   
+    async Delete(id : string){
+      
+      return await this.dataBaseService.DeleteTask(id);
+    }
 }
   

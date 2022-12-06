@@ -10,7 +10,7 @@ import { Injectable } from '@nestjs/common';
 async function request<TResponse>(
   url: string,
   config: RequestInit = {
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer 2464~qLXUxqNGp6e6U4ClqdzBZg65oOmSyguZlA006smRMt3lQaJwnk2KWeeJ9YZjS2kR' }
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer 22661~zjtSTQaieKkQJD6RGzYDooBLZIi3NbwH7jZgaFQTBw9xsnTuQ8PrwuzRLuFW6WwS' }
   }
 ): Promise<TResponse> {
   return fetch(url, config)
