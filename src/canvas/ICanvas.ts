@@ -1,8 +1,10 @@
-import IAssignment from "src/models/IAssignment";
-import Course from "src/models/ICourse"
+import Assignment from 'src/models/Assignment';
+import IAssignment from 'src/models/IAssignment';
+import Course from 'src/models/ICourse';
 
-interface ICanvas{
-    GetCourses();
-    GetAssignments(courseId : number);
-    GetAssignment(id : number, courseId : number);
-}export default ICanvas;
+interface ICanvas {
+  GetCourses();
+  GetAssignments(courseId: number): Promise<Assignment[]>;
+  GetAssignment(id: number, courseId: number);
+}
+export default ICanvas;
