@@ -362,7 +362,7 @@ export interface Account {  // LTI
     completed_at: string
   }
   
-  export interface User {
+  export interface ReqUser {
     // A Canvas user, e.g. a student, teacher, administrator, observer, etc.
     // The ID of the user.
     id: number,
@@ -1663,7 +1663,7 @@ export interface Account {  // LTI
     graded_at: string,
   
     // The submissions user (see user API) (optional)
-    user?: User,
+    user?: ReqUser,
   
     // Whether the submission was made after the applicable due date
     late: boolean,

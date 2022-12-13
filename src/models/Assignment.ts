@@ -2,6 +2,7 @@ import IAssignment from './IAssignment';
 
 class Assignment implements IAssignment {
   id: string | number;
+  canvasID: number;
   name: string;
   description: string;
   status: string;
@@ -20,6 +21,7 @@ class Assignment implements IAssignment {
     due_at: string,
     course_id: number,
     submission: number | null,
+    canvasID: number
   ) {
     this.name = name;
     this.id = id;
@@ -29,6 +31,7 @@ class Assignment implements IAssignment {
     this.due_at = due_at;
     this.course_id = course_id;
     this.submission = submission;
+    this.canvasID = canvasID;
   }
 }
 export default Assignment;

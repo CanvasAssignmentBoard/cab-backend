@@ -6,5 +6,6 @@ interface ICanvas {
   GetCourses();
   GetAssignments(courseId: number): Promise<Assignment[]>;
   GetAssignment(id: number, courseId: number);
+  GetCurrentUserID()
 }
 export default ICanvas;

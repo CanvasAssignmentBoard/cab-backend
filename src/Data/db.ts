@@ -1,21 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { randomUUID } from 'crypto';
+import { create } from 'domain';
+import Assignment from 'src/models/Assignment';
 import Prisma from './Prisma';
 
 @Injectable()
 class DB {
   constructor(private prisma: Prisma) {}
 
-  /* Creates board using the following params
-   ** @param {string}
-   */
+  
   async CreateBoard(
     _name: string,
     _id: string,
-    _owner: string,
-    _description: string,
-  ) {
+    _owner: number,
+    _description: string ) {
+    
     await this.prisma.board.create({
       data: {
         name: _name,
@@ -23,16 +23,9 @@ class DB {
         owner: _owner,
         description: _description,
       },
-    });
-  }
-
-  async GetCoursesOfBoard(_boardID: string) {
-    return await this.prisma.assignment.findMany({
-      where: {
-        boardId: {
-          equals: _boardID,
-        },
-      },
+      include: {
+        assignments: true
+      }
     });
   }
 
@@ -40,26 +33,29 @@ class DB {
     _id: string,
     _boardID: string,
     _canvasId: number,
+    _courseId: number,
     _status: string,
   ) {
-    return await this.prisma.assignment.create({
-      data: {
-        id: _id,
-        canvasId: _canvasId,
-        boardId: _boardID,
-        status: _status,
+    return await this.prisma.board.update({
+      where:{
+        id: _boardID
       },
+      data:{
+        assignments:{
+          connect:{
+            id: _id
+          },
+          create:{
+            status: _status,
+            canvasId: _canvasId,
+            courseID: _courseId,
+            id: _id
+          }
+        }
+      }
     });
   }
 
-  async LinkBoardToCourse(_boardID: string, _course: number) {
-    return await this.prisma.course.create({
-      data: {
-        boardId: _boardID,
-        canvasId: _course,
-      },
-    });
-  }
 
   async GetAssignments(_boardID: string) {
     return await this.prisma.assignment.findMany({
@@ -144,7 +140,7 @@ class DB {
     });
   }
 
-  async GetAllBoard(_owner: string) {
+  async GetAllBoard(_owner: number) {
     return await this.prisma.board.findMany({
       where: {
         owner: {
@@ -159,16 +155,9 @@ class DB {
       where: {
         id: _id,
       },
-    });
-  }
-
-  async GetCourses(_BoardID: string) {
-    return await this.prisma.course.findMany({
-      where: {
-        boardId: {
-          equals: _BoardID,
-        },
-      },
+      include:{
+        assignments: true,
+      }
     });
   }
 }

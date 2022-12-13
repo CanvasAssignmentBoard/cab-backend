@@ -11,23 +11,24 @@ model Board {
   id          String @id
   name        String
   description String
-  owner       String
+  owner       Int
+  assignments Assignment[]
 }
 
-model Course {
-  canvasId Int    @id @default(autoincrement())
-  boardId  String
-}
 
 model Assignment {
   id       String @id
+  board    Board? @relation(fields: [boardId], references: [id])
   canvasId Int
   status   String
-  boardId  String
+  boardId  String?
+  tasks Tasks[]
+  courseID Int
 }
 
 model Tasks {
   id           String @id
+  assignment    Assignment @relation(fields: [assignmentID], references: [id])
   status       String
   name         String
   assignmentID String

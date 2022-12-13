@@ -28,21 +28,21 @@ export class BoardLogic implements IBoardLogic {
     await this.dataBaseService.CreateBoard(
       body.name,
       boardID,
-      'owner',
+      await this.canvasService.GetCurrentUserID(),
       'board',
     );
 
     board.name = body.name;
     board.id = boardID;
     for (const course of body.courses) {
-      await this.dataBaseService.LinkBoardToCourse(board.id, course); //
       const assignments = await this.canvasService.GetAssignments(course);
       for (const assignment of assignments) {
         board.assignments.push(assignment);
         await this.dataBaseService.CreateAssignment(
           randomUUID(),
+          course.toString(),
           boardID,
-          assignment.id as number,
+          assignment.id,
           'TODO',
         );
       }
@@ -88,6 +88,6 @@ export class BoardLogic implements IBoardLogic {
   }
 
   async getAllBoards() {
-    return await this.dataBaseService.GetAllBoard('owner');
+    return await this.dataBaseService.GetAllBoard(await this.canvasService.GetCurrentUserID());
   }
 }

@@ -7,5 +7,6 @@ interface IAssignment {
   due_at: string;
   course_id: number;
   submission: number | null;
+  canvasID: number;
 }
 export default IAssignment;
