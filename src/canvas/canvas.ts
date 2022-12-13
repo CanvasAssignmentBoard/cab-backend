@@ -4,7 +4,7 @@ import Course from '../models/Course';
 import IAssignment from '../models/IAssignment';
 import Assignment from '../models/Assignment';
 import fetch from 'node-fetch';
-import { ReqCourse, ReqAssignment } from './Types';
+import { ReqCourse, ReqAssignment,ReqUser } from './Types';
 import { Injectable } from '@nestjs/common';
 
 // Regular student: 'Bearer 22661~zjtSTQaieKkQJD6RGzYDooBLZIi3NbwH7jZgaFQTBw9xsnTuQ8PrwuzRLuFW6WwS'
@@ -94,6 +94,13 @@ class Canvas implements ICanvas {
       `${this.host}/courses/` + courseId + '/assignments/',
     );
     return true;
+  }
+
+  async GetCurrentUserID() {
+    const data = await request<ReqUser>(
+      `${this.host}/user/self'`,
+    );
+    return data.id;
   }
 
   constructor() {}
