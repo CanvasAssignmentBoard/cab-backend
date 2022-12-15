@@ -19,20 +19,15 @@ export class AssignmentController {
     this.assignmentLogic = new AssignmentLogic(canvasService, dataBaseService);
   }
 
-  @ApiOperation({ summary: 'Get all assignments' })
-  @Get(':courseId')
-  async getAllAssignmentsForCourse(@Param() params) {
-    console.log(params.courseId);
-    return await this.assignmentLogic.GetAssignments(params.courseId);
-  }
-  /*@ApiOperation({ summary :"Get assignment"})
+
+  @ApiOperation({ summary :"Get assignment"})
   @Get("")
   async getAllTasksForAssignment(@Body() id : string){
-    return await this.taskLogic.GetTasks(id);
+    return await this.assignmentLogic.GetTasks(id);
   }
   @ApiOperation({ summary :"Create assignment in course"})
   @Post("Create")
   async CreateAssignment(@Body() body : CreateAssignmentBody){
-    return await this.taskLogic.GetTasks(id);
-  }*/
+    //return await this.assignmentLogic.GetTasks(id);
+  }
 }

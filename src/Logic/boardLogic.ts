@@ -40,9 +40,9 @@ export class BoardLogic implements IBoardLogic {
         board.assignments.push(assignment);
         await this.dataBaseService.CreateAssignment(
           randomUUID(),
-          course.toString(),
           boardID,
-          assignment.id,
+          assignment.canvasID,
+          course,
           'TODO',
         );
       }
@@ -51,40 +51,13 @@ export class BoardLogic implements IBoardLogic {
   }
 
   async getBoardById(boardID: string) {
-    const board: Board = new Board();
+    const board = await this.dataBaseService.GetBoard(boardID);
+    let courses : number[] = [];
 
-    const dbboard = await this.dataBaseService.GetBoard(boardID);
-    board.id = dbboard.id;
-    board.name = dbboard.name;
-    board.assignments = [];
-
-    const courses = await this.dataBaseService.GetCourses(boardID);
-    for (const course of courses) {
-      const assignments = await this.canvasService.GetAssignments(
-        course.canvasId,
-      );
-      for (const assignment of assignments) {
-        const dbAssignment = await this.dataBaseService.GetAssignmentByCanvas(
-          assignment.id as number,
-          boardID,
-        );
-
-        if (dbAssignment === null) {
-          assignment.status = 'TODO';
-          const new_assignment = await this.assignmentLogic.CreateDBAssignment(
-            assignment.id as number,
-            boardID,
-            'TODO',
-          );
-          assignment.id = new_assignment.id;
-        } else {
-          assignment.status = dbAssignment.status;
-          assignment.id = dbAssignment.id;
-        }
-        board.assignments.push(assignment);
-      }
-    }
-    return board;
+    board.assignments.forEach(assignment => {
+      
+    })
+    return await this.dataBaseService.GetBoard(boardID);
   }
 
   async getAllBoards() {

@@ -58,7 +58,7 @@ class Canvas implements ICanvas {
       }
       assignments.push(
         new Assignment(
-          data[i].id,
+          "null",
           data[i].name,
           data[i].description,
           data[i].created_at,
@@ -66,6 +66,7 @@ class Canvas implements ICanvas {
           data[i].due_at,
           data[i].course_id,
           data[i].submission,
+          data[i].id
         ),
       );
       i++;
@@ -78,7 +79,7 @@ class Canvas implements ICanvas {
       `${this.host}/courses/` + courseId + '/assignments/' + id,
     );
     return new Assignment(
-      data.id,
+      "",
       data.name,
       data.description,
       data.created_at,
@@ -86,6 +87,7 @@ class Canvas implements ICanvas {
       data.due_at,
       data.course_id,
       0,
+      data.id
     );
   }
 
@@ -98,7 +100,7 @@ class Canvas implements ICanvas {
 
   async GetCurrentUserID() {
     const data = await request<ReqUser>(
-      `${this.host}/user/self'`,
+      `${this.host}/users/self`,
     );
     return data.id;
   }

@@ -14,17 +14,14 @@ class DB {
     _name: string,
     _id: string,
     _owner: number,
-    _description: string ) {
-    
+    _description: string,) {
+
     await this.prisma.board.create({
       data: {
         name: _name,
         id: _id,
         owner: _owner,
         description: _description,
-      },
-      include: {
-        assignments: true
       }
     });
   }
@@ -42,9 +39,6 @@ class DB {
       },
       data:{
         assignments:{
-          connect:{
-            id: _id
-          },
           create:{
             status: _status,
             canvasId: _canvasId,
@@ -72,6 +66,9 @@ class DB {
       where: {
         id: _id,
       },
+      include:{
+        tasks: true
+      }
     });
   }
 
@@ -91,13 +88,19 @@ class DB {
     _Name: string,
     _dueDate: string,
   ) {
-    return await this.prisma.tasks.create({
+    return await this.prisma.assignment.update({
+      where:{
+        id: _AssignmentId
+      },
       data: {
-        id: _Id,
-        status: _Status,
-        name: _Name,
-        assignmentID: _AssignmentId,
-        dueAt: _dueDate,
+        tasks:{
+          create:{
+            id: _Id,
+            status: _Status,
+            name: _Name,
+            dueAt: _dueDate,
+          }
+        }
       },
     });
   }

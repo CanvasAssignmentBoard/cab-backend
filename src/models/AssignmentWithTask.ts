@@ -4,6 +4,7 @@ import Task from './Task';
 
 class AssignmentWithTasks implements IAssignmentWithTasks {
   id: number | string;
+  canvasID : number;
   name: string;
   description: string;
   created_at: string;

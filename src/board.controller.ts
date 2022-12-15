@@ -19,7 +19,8 @@ export class BoardController {
   @ApiOperation({ summary: 'Create a board' })
   @Post('Create')
   async createBoard(@Body() body: BoardCreateBody) {
-    return await this.boardLogic.CreateBoard(body);
+    await this.boardLogic.CreateBoard(body);
+    return 
   }
 
   @ApiBody({ type: String })
