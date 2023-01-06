@@ -7,14 +7,13 @@ import {
   Delete,
   Put,
 } from '@nestjs/common';
-import { AppService } from './app.service';
 import Assignment from './models/Assignment';
 import Task from './models/Task';
 import Canvas from './canvas/canvas';
 import { CreateTaskBody } from './Bodies/CreateTaskBody';
 import { randomUUID } from 'crypto';
 import ITaskLogic from './Logic/ITaskLogic';
-import { TaskLogic } from './Logic/TaskLogic';
+import TaskLogic from './Logic/TaskLogic';
 import DB from './Data/db';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 

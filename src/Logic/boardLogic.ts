@@ -30,7 +30,17 @@ export class BoardLogic implements IBoardLogic {
       boardID,
       await this.canvasService.GetCurrentUserID(),
       'board',
+      Date.now().toString()
     );
+
+    let columnID : string = randomUUID();
+    for (let i = 0; i < body.rows.length; i++) {
+      
+      if(i == 0){
+        await this.dataBaseService.CreateRow(columnID, true, body.rows[i], boardID)
+      }
+      await this.dataBaseService.CreateRow(randomUUID(), false, body.rows[i], boardID)
+    }
 
     board.name = body.name;
     board.id = boardID;
@@ -40,10 +50,9 @@ export class BoardLogic implements IBoardLogic {
         board.assignments.push(assignment);
         await this.dataBaseService.CreateAssignment(
           randomUUID(),
-          boardID,
+          columnID,
           assignment.canvasID,
           course,
-          'TODO',
         );
       }
     }
@@ -54,9 +63,14 @@ export class BoardLogic implements IBoardLogic {
     const board = await this.dataBaseService.GetBoard(boardID);
     let courses : number[] = [];
 
-    board.assignments.forEach(assignment => {
-      
+    board.rows.forEach(row => {
+      row.assignments.forEach(item => {
+        if(!courses.find(x => x == item.courseID)){
+          courses.push(item.courseID);
+        }
+      })
     })
+
     return await this.dataBaseService.GetBoard(boardID);
   }
 

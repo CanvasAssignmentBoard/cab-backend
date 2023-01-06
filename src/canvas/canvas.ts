@@ -6,6 +6,7 @@ import Assignment from '../models/Assignment';
 import fetch from 'node-fetch';
 import { ReqCourse, ReqAssignment,ReqUser } from './Types';
 import { Injectable } from '@nestjs/common';
+import CreateAssignmentBody from 'src/Bodies/CreateAssignmentBody';
 
 // Regular student: 'Bearer 22661~zjtSTQaieKkQJD6RGzYDooBLZIi3NbwH7jZgaFQTBw9xsnTuQ8PrwuzRLuFW6WwS'
 // Teacher: 'Bearer 22661~4e7z2KYIGz1ZkUESyVmAfBfy1TexJetqFsZLy1Ep7t450sZhJ87t09PWFWuGe5uv'
@@ -13,16 +14,19 @@ import { Injectable } from '@nestjs/common';
 
 // openmaze Uri: https://openmaze.instructure.com/api/v1
 // fhict Uri: https://fhict.instructure.com/api/v1
+
 async function request<TResponse>(
   url: string,
-  config: RequestInit = {
+  _body: string,
+): Promise<TResponse> {
+  let config: RequestInit = {
     headers: {
       'Content-Type': 'application/json',
       Authorization:
         'Bearer 22661~zjtSTQaieKkQJD6RGzYDooBLZIi3NbwH7jZgaFQTBw9xsnTuQ8PrwuzRLuFW6WwS',
     },
-  },
-): Promise<TResponse> {
+    body: _body
+  };
   return fetch(url, config)
     .then((response) => response.json())
     .then((data) => data as TResponse[]);
@@ -33,7 +37,7 @@ class Canvas implements ICanvas {
   host = 'https://openmaze.instructure.com/api/v1';
   async GetCourses(): Promise<ICourse[]> {
     const courses: Course[] = [];
-    const data = await request<ReqCourse>(`${this.host}/courses`);
+    const data = await request<ReqCourse>(`${this.host}/courses`, null);
     let i = 0;
     while (true) {
       if (data[i] == undefined) {
@@ -48,7 +52,7 @@ class Canvas implements ICanvas {
   async GetAssignments(courseId: number): Promise<Assignment[]> {
     const assignments: Assignment[] = [];
     const data = await request<ReqAssignment>(
-      `${this.host}/courses/` + courseId + '/assignments',
+      `${this.host}/courses/` + courseId + '/assignments', null
     );
 
     let i = 0;
@@ -76,7 +80,7 @@ class Canvas implements ICanvas {
 
   async GetAssignment(id: number, courseId: number): Promise<Assignment> {
     const data = await request<ReqAssignment>(
-      `${this.host}/courses/` + courseId + '/assignments/' + id,
+      `${this.host}/courses/` + courseId + '/assignments/' + id, null
     );
     return new Assignment(
       "",
@@ -91,16 +95,16 @@ class Canvas implements ICanvas {
     );
   }
 
-  async CreateAssignment(courseId: number) {
+  async CreateAssignment(courseId: number, assignment : CreateAssignmentBody) {
     const data = await request<ReqAssignment>(
-      `${this.host}/courses/` + courseId + '/assignments/',
+      `${this.host}/courses/` + courseId + '/assignments/', JSON.stringify(assignment)
     );
     return true;
   }
 
   async GetCurrentUserID() {
     const data = await request<ReqUser>(
-      `${this.host}/users/self`,
+      `${this.host}/users/self`, null
     );
     return data.id;
   }

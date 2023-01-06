@@ -12,16 +12,25 @@ model Board {
   name        String
   description String
   owner       Int
+  lastUpdate  String
+  rows Row[]
+}
+
+model Row {
+  board    Board? @relation(fields: [boardId], references: [id])
+  boardId  String?
+  id String @id
+  name String
+  default Boolean
   assignments Assignment[]
 }
 
 
 model Assignment {
   id       String @id
-  board    Board? @relation(fields: [boardId], references: [id])
+  row    Row? @relation(fields: [rowId], references: [id])
   canvasId Int
-  status   String
-  boardId  String?
+  rowId  String?
   tasks Tasks[]
   courseID Int
 }

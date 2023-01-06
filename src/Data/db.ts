@@ -5,16 +5,19 @@ import { create } from 'domain';
 import Assignment from 'src/models/Assignment';
 import Prisma from './Prisma';
 
+import IDB from './IDB'
 @Injectable()
-class DB {
-  constructor(private prisma: Prisma) {}
-
+class DB implements IDB {
+  constructor(private prisma: PrismaClient) {
+    prisma.$connect();
+  }
   
   async CreateBoard(
     _name: string,
     _id: string,
     _owner: number,
-    _description: string,) {
+    _description: string,
+    _lastUpdate: string) {
 
     await this.prisma.board.create({
       data: {
@@ -22,42 +25,44 @@ class DB {
         id: _id,
         owner: _owner,
         description: _description,
+        lastUpdate: _lastUpdate
+      }
+    });
+  }
+
+  async UpdateLastBoardUpdate(
+    _id: string,
+    _lastUpdate: string) {
+
+    await this.prisma.board.update({
+      where:{
+        id: _id,
+      },
+      data: {
+        lastUpdate: _lastUpdate
       }
     });
   }
 
   async CreateAssignment(
     _id: string,
-    _boardID: string,
+    _rowID: string,
     _canvasId: number,
-    _courseId: number,
-    _status: string,
+    _courseId: number
   ) {
-    return await this.prisma.board.update({
+    return await this.prisma.row.update({
       where:{
-        id: _boardID
+        id: _rowID
       },
       data:{
         assignments:{
           create:{
-            status: _status,
             canvasId: _canvasId,
             courseID: _courseId,
             id: _id
           }
         }
       }
-    });
-  }
-
-
-  async GetAssignments(_boardID: string) {
-    return await this.prisma.assignment.findMany({
-      where: {
-        boardId: {
-          equals: _boardID,
-        },
-      },
     });
   }
 
@@ -69,15 +74,6 @@ class DB {
       include:{
         tasks: true
       }
-    });
-  }
-
-  async GetAssignmentByCanvas(_canvasId: number, _boardId: string) {
-    return await this.prisma.assignment.findFirst({
-      where: {
-        canvasId: _canvasId,
-        boardId: _boardId,
-      },
     });
   }
 
@@ -143,6 +139,38 @@ class DB {
     });
   }
 
+  async DoesAssignmenthaveTask(Id: string) {
+    return await this.prisma.tasks.count({
+      where: {
+        assignmentID: Id,
+      },
+    });
+  }
+
+  async DoesTaskExist(Id: string) {
+    return await this.prisma.tasks.count({
+      where: {
+        id: Id,
+      },
+    });
+  }
+
+  async DoesAssignmentExist(Id: string) {
+    return await this.prisma.assignment.count({
+      where: {
+        id: Id,
+      },
+    });
+  }
+
+  async DoesRowExist(Id: string) {
+    return await this.prisma.row.count({
+      where: {
+        id: Id,
+      },
+    });
+  }
+
   async GetAllBoard(_owner: number) {
     return await this.prisma.board.findMany({
       where: {
@@ -159,9 +187,55 @@ class DB {
         id: _id,
       },
       include:{
-        assignments: true,
+        rows: {
+          include:{
+            assignments: true,
+          }
+        }
+        
       }
     });
+  }
+
+  async CreateRow(_id: string, _defaultRow: boolean, _name: string, _boardID: string){
+    return await this.prisma.board.update({
+      where:{ 
+        id: _boardID
+      },
+      data:{ rows:{
+        create:{
+          id: _id,
+          default: _defaultRow,
+          name: _name
+        }
+      }}
+    })
+  }
+
+  async RemoveRowConnection(_rowID: string, _assignmentId: string){
+    await this.prisma.row.update({
+      where:{
+        id: _rowID
+      },
+      data:{ 
+        assignments:{
+          disconnect: [{id: _assignmentId}]
+        }
+      }
+    })
+  }
+
+  async AddRowConnection(_rowID: string, _assignmentId: string){
+    await this.prisma.row.update({
+      where:{
+        id: _rowID
+      },
+      data:{ 
+        assignments:{
+          connect: [{id: _assignmentId}]
+        }
+      }
+    })
   }
 }
 export default DB;

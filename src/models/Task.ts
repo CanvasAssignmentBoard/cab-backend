@@ -8,9 +8,9 @@ class Task implements ITask{
     updated_at: Date;
     due_at: Date;
     status: string;
-    parent_assignment_id: number;
+    parent_assignment_id: string;
 
-    constructor(id: string, name: string, description: string, created_at: Date, updated_at: Date, due_at: Date, status: string, parent_assignment_id: number){
+    constructor(id: string, name: string, description: string, created_at: Date, updated_at: Date, due_at: Date, status: string, parent_assignment_id: string){
         this.name = name;
         this.id = id;
         this.description = description;
