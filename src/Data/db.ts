@@ -8,8 +8,7 @@ import Prisma from './Prisma';
 import IDB from './IDB'
 @Injectable()
 class DB implements IDB {
-  constructor(private prisma: PrismaClient) {
-    prisma.$connect();
+  constructor(private prisma: Prisma) {
   }
   
   async CreateBoard(

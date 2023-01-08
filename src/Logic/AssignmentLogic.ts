@@ -1,15 +1,16 @@
 import { randomUUID } from 'crypto';
-import CreateAssignmentBody from 'src/Bodies/CreateAssignmentBody';
-import CreateDBAssignment from 'src/Bodies/CreateDBAssignment';
-import ICanvas from 'src/canvas/ICanvas';
-import DB from 'src/Data/db';
-import Assignment from 'src/models/Assignment';
-import AssignmentWithTasks from 'src/models/AssignmentWithTask';
-import Task from 'src/models/Task';
+import CreateAssignmentBody from '../Bodies/CreateAssignmentBody';
+import CreateDBAssignment from '../Bodies/CreateDBAssignment';
+import ICanvas from '../canvas/ICanvas';
+import DB from '../Data/db';
+import Assignment from '../models/Assignment';
+import AssignmentWithTasks from '../models/AssignmentWithTask';
+import Task from '../models/Task';
 import IAssignmentLogic from './IAssignmentLogic';
 import {
   isValidISODateString,
 } from 'iso-datestring-validator';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 class AssignmentLogic implements IAssignmentLogic {
   constructor(
@@ -20,7 +21,7 @@ class AssignmentLogic implements IAssignmentLogic {
   async GetAssignment(id : string){
     let assignment = await this.dataBaseService.GetAssignment(id);
     if(assignment == null){
-      return false;
+      throw new HttpException('Invalid ID', HttpStatus.BAD_REQUEST);
     }
     let _assignment = await this.canvasService.GetAssignment(assignment.canvasId, assignment.courseID);
     let tasks = await this.dataBaseService.GetTasks(id);
@@ -34,16 +35,21 @@ class AssignmentLogic implements IAssignmentLogic {
     return new AssignmentWithTasks(_assignment, tasks);
   }
 
-  async CreateAssignment(courseId: number, assignment: CreateAssignmentBody) {
-    if(courseId === undefined){
-      return false;
+  async CreateAssignment(assignment: CreateAssignmentBody) {
+    if(assignment.courseID === undefined){
+      throw new HttpException('Invalid course ID', HttpStatus.BAD_REQUEST);
+
     } 
 
-    if(assignment.description !== undefined || assignment.name !== undefined || isValidISODateString(assignment.due_at)){
-      return false;
+    if(assignment.name !== undefined){
+      throw new HttpException('Missing Name', HttpStatus.BAD_REQUEST);
     }
 
-    return this.canvasService.CreateAssignment(courseId, assignment);
+    if(isValidISODateString(assignment.due_at)){
+      throw new HttpException('Invalid Due Date', HttpStatus.BAD_REQUEST);
+    }
+
+    return await this.canvasService.CreateAssignment(assignment.courseID, assignment);
   }
 }
 export default AssignmentLogic;

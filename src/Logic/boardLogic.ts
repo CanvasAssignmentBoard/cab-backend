@@ -1,27 +1,39 @@
 import { randomUUID } from 'crypto';
-import DB from 'src/Data/db';
+import DB from '../Data/db';
 import { BoardCreateBody } from '../Bodies/BoardCreateBody';
 import Board from '../models/Board';
-import Assignment from '../models/Assignment';
-import Canvas from 'src/canvas/canvas';
+import Canvas from '../canvas/canvas';
 import IBoardLogic from './IBoardLogic';
 import AssignmentLogic from './AssignmentLogic';
-import { timer } from 'rxjs';
 import CreateDBAssignment from '../Bodies/CreateDBAssignment';
+import { HttpException } from '@nestjs/common/exceptions';
+import { HttpStatus } from '@nestjs/common/enums';
+import { error } from 'console';
+import ICanvas from 'src/canvas/ICanvas';
+import IDB from 'src/Data/IDB';
 
 export class BoardLogic implements IBoardLogic {
   private readonly assignmentLogic: AssignmentLogic;
   constructor(
-    private readonly canvasService: Canvas,
-    private readonly dataBaseService: DB,
+    private readonly canvasService: ICanvas,
+    private readonly dataBaseService: IDB,
   ) {
-    this.assignmentLogic = new AssignmentLogic(
-      this.canvasService,
-      this.dataBaseService,
-    );
+
   }
 
   async CreateBoard(body: BoardCreateBody) {
+    if(body.name == null){
+      throw new HttpException('Missing board name', HttpStatus.BAD_REQUEST);
+    }
+
+    if(body.courses.length < 1){
+      throw new HttpException('Missing courses', HttpStatus.BAD_REQUEST);
+    }
+
+    if(body.rows.length < 1){
+      throw new HttpException('Missing rows', HttpStatus.BAD_REQUEST);
+    }
+
     const board: Board = new Board();
     board.assignments = [];
     const boardID = randomUUID();
@@ -60,18 +72,21 @@ export class BoardLogic implements IBoardLogic {
   }
 
   async getBoardById(boardID: string) {
-    const board = await this.dataBaseService.GetBoard(boardID);
-    let courses : number[] = [];
-
-    board.rows.forEach(row => {
+    /*board.rows.forEach(row => {
       row.assignments.forEach(item => {
         if(!courses.find(x => x == item.courseID)){
           courses.push(item.courseID);
         }
       })
-    })
+    })*/
 
-    return await this.dataBaseService.GetBoard(boardID);
+      const board = await this.dataBaseService.GetBoard(boardID);
+      if(board == null){
+        throw new HttpException('Invalid ID', HttpStatus.BAD_REQUEST);
+
+      }
+      return board
+
   }
 
   async getAllBoards() {

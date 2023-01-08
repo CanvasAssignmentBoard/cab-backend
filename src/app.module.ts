@@ -19,6 +19,6 @@ import { PrismaClient } from '@prisma/client';
     AssignmentController,
     RowController
   ],
-  providers: [Prisma, PrismaClient, Canvas, DB],
+  providers: [Prisma, Canvas, DB],
 })
 export class AppModule {}

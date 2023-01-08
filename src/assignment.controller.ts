@@ -14,8 +14,7 @@ import { PrismaClient } from '@prisma/client';
 @Controller('Assignment')
 export class AssignmentController {
   assignmentLogic: IAssignmentLogic;
-  constructor(canvasService: Canvas, dataBaseService: DB, test : PrismaClient) {
-    console.log(test)
+  constructor(canvasService: Canvas, dataBaseService: DB) {
     this.assignmentLogic = new AssignmentLogic(canvasService, dataBaseService);
   }
 
@@ -29,6 +28,6 @@ export class AssignmentController {
   @ApiOperation({ summary :"Create assignment in course"})
   @Post("Create")
   async CreateAssignment(@Body() body : CreateAssignmentBody){
-    return await this.assignmentLogic.CreateAssignment(body.courseID, body);
+    return await this.assignmentLogic.CreateAssignment(body);
   }
 }

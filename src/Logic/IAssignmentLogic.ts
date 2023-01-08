@@ -4,6 +4,6 @@ import Assignment from 'src/models/Assignment';
 
 interface IAssignmentLogic {
   GetAssignment(id : string);
-  CreateAssignment(courseId: number, assignment: CreateAssignmentBody);
+  CreateAssignment(assignment: CreateAssignmentBody);
 }
 export default IAssignmentLogic;

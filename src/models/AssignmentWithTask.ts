@@ -2,7 +2,7 @@ import Assignment from './Assignment';
 import IAssignmentWithTasks from './IAssignmentWithTasks';
 import Task from './Task';
 
-class AssignmentWithTasks implements IAssignmentWithTasks {
+export default class AssignmentWithTasks implements IAssignmentWithTasks {
   id: number | string;
   canvasID : number;
   name: string;
@@ -26,4 +26,4 @@ class AssignmentWithTasks implements IAssignmentWithTasks {
     this.tasks = tasks;
   }
 }
-export default AssignmentWithTasks;
+

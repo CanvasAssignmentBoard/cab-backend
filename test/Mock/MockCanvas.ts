@@ -20,39 +20,35 @@ class MockCanvas implements ICanvas {
     const assignments: Assignment[] = [];
 
     let i = 0;
-    /*while (true) {
-      if (data[i] == undefined) {
-        break;
-      }
+    for (let index = 0; index < 5; index++) {
       assignments.push(
         new Assignment(
-          "null",
-          data[i].name,
-          data[i].description,
-          data[i].created_at,
-          data[i].updated_at,
-          data[i].due_at,
-          data[i].course_id,
-          data[i].submission,
-          data[i].id
+          "",
+          "AssignmentName",
+          "AssignmentDescription",
+          new Date().toISOString(),
+          new Date().toISOString(),
+          new Date().toISOString(),
+          courseId,
+          1,
+          index
         ),
       );
-      i++;
-    }*/
+    }
     return assignments;
   }
 
   async GetAssignment(id: number, courseId: number): Promise<Assignment> {
     return new Assignment(
       "",
-      "data.name",
-      "data.description",
-      "data.created_at",
-      "data.updated_at",
-      "data.due_at",
-      0,
-      0,
-      0
+      "AssignmentName",
+      "AssignmentDescription",
+      new Date().toISOString(),
+      new Date().toISOString(),
+      new Date().toISOString(),
+      courseId,
+      1,
+      id
     );
   }
 
@@ -62,7 +58,7 @@ class MockCanvas implements ICanvas {
 
   async GetCurrentUserID() {
 
-    return 1;
+    return 123;
   }
 
   constructor() {}
