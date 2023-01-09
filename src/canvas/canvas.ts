@@ -32,6 +32,24 @@ async function request<TResponse>(
     .then((data) => data as TResponse[]);
 }
 
+async function postrequest<TResponse>(
+    url: string,
+    _body: string,
+): Promise<TResponse> {
+  let config: RequestInit = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization:
+          'Bearer 22661~zjtSTQaieKkQJD6RGzYDooBLZIi3NbwH7jZgaFQTBw9xsnTuQ8PrwuzRLuFW6WwS',
+    },
+    method: 'POST',
+    body: _body
+  };
+  return fetch(url, config)
+      .then((response) => response.json())
+      .then((data) => data as TResponse[]);
+}
+
 @Injectable()
 class Canvas implements ICanvas {
   host = 'https://openmaze.instructure.com/api/v1';
@@ -96,9 +114,10 @@ class Canvas implements ICanvas {
   }
 
   async CreateAssignment(courseId: number, assignment : CreateAssignmentBody) {
-    const data = await request<ReqAssignment>(
+    const data = await postrequest<ReqAssignment>(
       `${this.host}/courses/` + courseId + '/assignments/', JSON.stringify(assignment)
     );
+    console.log(data);
     return true;
   }
 

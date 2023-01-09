@@ -1,6 +1,7 @@
 export default class CreateAssignmentBody {
-    name :string;
-    description : string;
-    due_at : string;
+    assignment: {
+        name: string;
+        description : string;
+    }
     courseID : number;
 }

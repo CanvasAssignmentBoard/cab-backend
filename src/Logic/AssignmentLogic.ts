@@ -36,18 +36,6 @@ class AssignmentLogic implements IAssignmentLogic {
   }
 
   async CreateAssignment(assignment: CreateAssignmentBody) {
-    if(assignment.courseID === undefined){
-      throw new HttpException('Invalid course ID', HttpStatus.BAD_REQUEST);
-
-    } 
-
-    if(assignment.name !== undefined){
-      throw new HttpException('Missing Name', HttpStatus.BAD_REQUEST);
-    }
-
-    if(isValidISODateString(assignment.due_at)){
-      throw new HttpException('Invalid Due Date', HttpStatus.BAD_REQUEST);
-    }
 
     return await this.canvasService.CreateAssignment(assignment.courseID, assignment);
   }
