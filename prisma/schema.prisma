@@ -13,33 +13,33 @@ model Board {
   description String
   owner       Int
   lastUpdate  String
-  rows Row[]
+  rows        Row[]
 }
 
 model Row {
-  board    Board? @relation(fields: [boardId], references: [id])
-  boardId  String?
-  id String @id
-  name String
-  default Boolean
+  boardId     String?
+  id          String       @id
+  name        String
+  default     Boolean
   assignments Assignment[]
+  board       Board?       @relation(fields: [boardId], references: [id])
 }
 
-
 model Assignment {
-  id       String @id
-  row    Row? @relation(fields: [rowId], references: [id])
+  id       String  @id
   canvasId Int
-  rowId  String?
-  tasks Tasks[]
+  rowId    String?
   courseID Int
+  index    Int?
+  row      Row?    @relation(fields: [rowId], references: [id])
+  tasks    Tasks[]
 }
 
 model Tasks {
-  id           String @id
-  assignment    Assignment @relation(fields: [assignmentID], references: [id])
+  id           String     @id
   status       String
   name         String
   assignmentID String
   dueAt        String
+  assignment   Assignment @relation(fields: [assignmentID], references: [id])
 }

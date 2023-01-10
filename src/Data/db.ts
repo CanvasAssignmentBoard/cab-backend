@@ -5,41 +5,37 @@ import { create } from 'domain';
 import Assignment from 'src/models/Assignment';
 import Prisma from './Prisma';
 
-import IDB from './IDB'
+import IDB from './IDB';
 @Injectable()
 class DB implements IDB {
-  constructor(private prisma: Prisma) {
-  }
-  
+  constructor(private prisma: Prisma) {}
+
   async CreateBoard(
     _name: string,
     _id: string,
     _owner: number,
     _description: string,
-    _lastUpdate: string) {
-
+    _lastUpdate: string,
+  ) {
     await this.prisma.board.create({
       data: {
         name: _name,
         id: _id,
         owner: _owner,
         description: _description,
-        lastUpdate: _lastUpdate
-      }
+        lastUpdate: _lastUpdate,
+      },
     });
   }
 
-  async UpdateLastBoardUpdate(
-    _id: string,
-    _lastUpdate: string) {
-
+  async UpdateLastBoardUpdate(_id: string, _lastUpdate: string) {
     await this.prisma.board.update({
-      where:{
+      where: {
         id: _id,
       },
       data: {
-        lastUpdate: _lastUpdate
-      }
+        lastUpdate: _lastUpdate,
+      },
     });
   }
 
@@ -47,21 +43,22 @@ class DB implements IDB {
     _id: string,
     _rowID: string,
     _canvasId: number,
-    _courseId: number
+    _courseId: number,
   ) {
     return await this.prisma.row.update({
-      where:{
-        id: _rowID
+      where: {
+        id: _rowID,
       },
-      data:{
-        assignments:{
-          create:{
+      data: {
+        assignments: {
+          create: {
             canvasId: _canvasId,
             courseID: _courseId,
-            id: _id
-          }
-        }
-      }
+            id: _id,
+            index: await this.GenerateNewIndex(_rowID),
+          },
+        },
+      },
     });
   }
 
@@ -70,9 +67,9 @@ class DB implements IDB {
       where: {
         id: _id,
       },
-      include:{
-        tasks: true
-      }
+      include: {
+        tasks: true,
+      },
     });
   }
 
@@ -84,18 +81,18 @@ class DB implements IDB {
     _dueDate: string,
   ) {
     return await this.prisma.assignment.update({
-      where:{
-        id: _AssignmentId
+      where: {
+        id: _AssignmentId,
       },
       data: {
-        tasks:{
-          create:{
+        tasks: {
+          create: {
             id: _Id,
             status: _Status,
             name: _Name,
             dueAt: _dueDate,
-          }
-        }
+          },
+        },
       },
     });
   }
@@ -185,56 +182,94 @@ class DB implements IDB {
       where: {
         id: _id,
       },
-      include:{
+      include: {
         rows: {
-          include:{
+          include: {
             assignments: true,
-          }
-        }
-        
-      }
+          },
+        },
+      },
     });
   }
 
-  async CreateRow(_id: string, _defaultRow: boolean, _name: string, _boardID: string){
+  async CreateRow(
+    _id: string,
+    _defaultRow: boolean,
+    _name: string,
+    _boardID: string,
+  ) {
     return await this.prisma.board.update({
-      where:{ 
-        id: _boardID
+      where: {
+        id: _boardID,
       },
-      data:{ rows:{
-        create:{
-          id: _id,
-          default: _defaultRow,
-          name: _name
-        }
-      }}
-    })
+      data: {
+        rows: {
+          create: {
+            id: _id,
+            default: _defaultRow,
+            name: _name,
+          },
+        },
+      },
+    });
   }
 
-  async RemoveRowConnection(_rowID: string, _assignmentId: string){
+  async RemoveRowConnection(_rowID: string, _assignmentId: string) {
     await this.prisma.row.update({
-      where:{
-        id: _rowID
+      where: {
+        id: _rowID,
       },
-      data:{ 
-        assignments:{
-          disconnect: [{id: _assignmentId}]
-        }
-      }
-    })
+      data: {
+        assignments: {
+          disconnect: [{ id: _assignmentId }],
+        },
+      },
+    });
   }
 
-  async AddRowConnection(_rowID: string, _assignmentId: string){
+  async AddRowConnection(_rowID: string, _assignmentId: string) {
     await this.prisma.row.update({
-      where:{
-        id: _rowID
+      where: {
+        id: _rowID,
       },
-      data:{ 
-        assignments:{
-          connect: [{id: _assignmentId}]
-        }
-      }
-    })
+      data: {
+        assignments: {
+          connect: [{ id: _assignmentId }],
+        },
+      },
+    });
+  }
+
+  async GenerateNewIndex(_rowID: string = null) {
+    if (_rowID == null) {
+      const row = await this.prisma.row.findFirst({
+        where: {
+          default: true,
+        },
+      });
+      return await this.prisma.assignment.count({
+        where: {
+          rowId: row.id,
+        },
+      });
+    } else {
+      return await this.prisma.assignment.count({
+        where: {
+          rowId: _rowID,
+        },
+      });
+    }
+  }
+
+  async ReorderItem(_assignmentId: string, _index: number) {
+    await this.prisma.assignment.update({
+      where: {
+        id: _assignmentId,
+      },
+      data: {
+        index: _index,
+      },
+    });
   }
 }
 export default DB;
