@@ -28,7 +28,7 @@ export class TaskController {
   @ApiOperation({ summary: 'Get all tasks' })
   @Get(':id')
   async getAllTasksForAssignment(@Param() params) {
-    console.log(params.id);
+    // console.log(params.id);
     return await this.taskLogic.GetTasks(params.id);
   }
 

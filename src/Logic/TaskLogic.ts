@@ -13,7 +13,7 @@ export default class TaskLogic implements ITaskLogic {
   async GetTasks(id: string) {
     let tasks = await this.dataBaseService.GetTasks(id);
     if(tasks.length == 0){
-      console.log("No tasks found")
+      // console.log("No tasks found")
       return false;
     }
     return tasks;

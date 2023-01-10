@@ -20,6 +20,7 @@ export class RowController {
   @ApiOperation({ summary: 'Move item to row' })
   @Post('Move/:assignmentid/:rowid/:index')
   async MoveToRow(@Param() params) {
+    console.log("Hallo")
     return await this.rowLogic.MoveToRow(params.assignmentid, params.rowid);
   }
 

@@ -1,4 +1,4 @@
 interface IRowLogic {
-    MoveToRow(rowId: string, assignmentID : string)
+    MoveToRow(assignmentID: string, rowId : string)
     ReorderItem(assignmentID: string, index: number)
 } export default IRowLogic;

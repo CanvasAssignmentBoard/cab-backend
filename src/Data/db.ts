@@ -262,12 +262,13 @@ class DB implements IDB {
   }
 
   async ReorderItem(_assignmentId: string, _index: number) {
+    console.log("Reindexing")
     await this.prisma.assignment.update({
       where: {
         id: _assignmentId,
       },
       data: {
-        index: _index,
+        index: parseInt(_index.toString()),
       },
     });
   }
