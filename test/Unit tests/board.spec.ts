@@ -55,7 +55,7 @@ describe('Board Logic', () => {
         it('GB04: Retrieve board with valid id', async () => {
             let id = randomUUID();
             await mockDB.CreateBoard(id);
-            await expect(logic.getBoardById(id)).toHaveProperty('id', id);
+             expect(await logic.getBoardById(id)).toHaveProperty('id', id);
         });
 
         it('GB05: Retrieve board with invalid id return “Invalid boardId”', async () => {

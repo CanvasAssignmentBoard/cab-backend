@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import Assignment from './models/Assignment';
 import Task from './models/Task';
-import Canvas from './canvas/canvas';
+import ICanvas from './canvas/ICanvas';
 import { CreateTaskBody } from './Bodies/CreateTaskBody';
 import { randomUUID } from 'crypto';
 import ITaskLogic from './Logic/ITaskLogic';
@@ -21,7 +21,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 @Controller('Task')
 export class TaskController {
   taskLogic: ITaskLogic;
-  constructor(canvasService: Canvas, dataBaseService: DB) {
+  constructor(canvasService: ICanvas, dataBaseService: DB) {
     this.taskLogic = new TaskLogic(canvasService, dataBaseService);
   }
 

@@ -111,7 +111,6 @@ class DB implements IDB {
         id: _Id,
       },
       data: {
-        assignmentID: _AssignmentId,
         status: Status,
         name: Name,
         dueAt: _dueDate,

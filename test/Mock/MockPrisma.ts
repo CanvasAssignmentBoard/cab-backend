@@ -24,7 +24,7 @@ class MockPrisma {
     });
   }
 
-  async CreateAssignment(_rowID: string) {
+  async CreateAssignment(_rowID: string, assignmentID : string) {
     return await this.prisma.row.update({
       where:{
         id: _rowID
@@ -32,9 +32,10 @@ class MockPrisma {
       data:{
         assignments:{
           create:{
+            name: "TestName",
             canvasId: 123,
             courseID: 123,
-            id: "AssignmentId"
+            id: assignmentID
           }
         }
       }
@@ -43,19 +44,16 @@ class MockPrisma {
 
   async CreateTasks(
     _Id: string,
-    _AssignmentId: string,
-    _Status: string,
-    _Name: string,
-    _dueDate: string,
+    taskid: string
   ) {
     return await this.prisma.assignment.update({
       where:{
-        id: "AssignmentId",
+        id: _Id,
       },
       data: {
         tasks:{
           create:{
-            id: "TestID",
+            id: taskid,
             status: "TestStatus",
             name: "TestName",
             dueAt: new Date().toISOString(),
@@ -65,10 +63,10 @@ class MockPrisma {
     });
   }
 
-  async CreateRow(_id: string, _defaultRow: boolean){
+  async CreateRow(_id: string, _defaultRow: boolean, boardid : string){
     return await this.prisma.board.update({
       where:{ 
-        id: "BoardID"
+        id: boardid
       },
       data:{ rows:{
         create:{
