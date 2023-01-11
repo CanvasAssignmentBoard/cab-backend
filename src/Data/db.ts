@@ -44,6 +44,7 @@ class DB implements IDB {
     _rowID: string,
     _canvasId: number,
     _courseId: number,
+    _name: string
   ) {
     return await this.prisma.row.update({
       where: {
@@ -52,6 +53,7 @@ class DB implements IDB {
       data: {
         assignments: {
           create: {
+            name: _name,
             canvasId: _canvasId,
             courseID: _courseId,
             id: _id,

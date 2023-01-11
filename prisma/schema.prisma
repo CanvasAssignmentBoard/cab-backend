@@ -26,6 +26,7 @@ model Row {
 }
 
 model Assignment {
+  name     String
   id       String  @id
   canvasId Int
   rowId    String?

@@ -54,6 +54,7 @@ class AssignmentLogic implements IAssignmentLogic {
       assignment.courseID,
       assignment
     );
+    
   }
 }
 export default AssignmentLogic;
