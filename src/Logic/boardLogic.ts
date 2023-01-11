@@ -17,20 +17,18 @@ export class BoardLogic implements IBoardLogic {
   constructor(
     private readonly canvasService: ICanvas,
     private readonly dataBaseService: IDB,
-  ) {
-
-  }
+  ) {}
 
   async CreateBoard(body: BoardCreateBody) {
-    if(body.name == null){
+    if (body.name == null) {
       throw new HttpException('Missing board name', HttpStatus.BAD_REQUEST);
     }
 
-    if(body.courses.length < 1){
+    if (body.courses.length < 1) {
       throw new HttpException('Missing courses', HttpStatus.BAD_REQUEST);
     }
 
-    if(body.rows.length < 1){
+    if (body.rows.length < 1) {
       throw new HttpException('Missing rows', HttpStatus.BAD_REQUEST);
     }
 
@@ -42,16 +40,25 @@ export class BoardLogic implements IBoardLogic {
       boardID,
       await this.canvasService.GetCurrentUserID(),
       'board',
-      Date.now().toString()
+      Date.now().toString(),
     );
 
-    let columnID : string = randomUUID();
+    const columnID: string = randomUUID();
     for (let i = 0; i < body.rows.length; i++) {
-      
-      if(i == 0){
-        await this.dataBaseService.CreateRow(columnID, true, body.rows[i], boardID)
+      if (i == 0) {
+        await this.dataBaseService.CreateRow(
+          columnID,
+          true,
+          body.rows[i],
+          boardID,
+        );
       }
-      await this.dataBaseService.CreateRow(randomUUID(), false, body.rows[i], boardID)
+      await this.dataBaseService.CreateRow(
+        randomUUID(),
+        false,
+        body.rows[i],
+        boardID,
+      );
     }
 
     board.name = body.name;
@@ -81,16 +88,34 @@ export class BoardLogic implements IBoardLogic {
       })
     })*/
 
-      const board = await this.dataBaseService.GetBoard(boardID);
-      if(board == null){
-        throw new HttpException('Invalid ID', HttpStatus.BAD_REQUEST);
+    const board = await this.dataBaseService.GetBoard(boardID);
 
-      }
-      return board
+    const assignments =
+      board.rows.assignments == undefined ? [] : board.rows.assignments;
 
+    board.rows.forEach((row) => {
+      row.assignments.forEach(async (a) => {
+        if (!assignments.find((x) => x.canvasID == a.canvasID)) {
+          const ac = await this.canvasService.GetAssignment(
+            a.canvasID,
+            a.courseID,
+          );
+          console.log(ac.name);
+          a.name = ac.name;
+          assignments.push(a);
+        }
+      });
+    });
+
+    if (board == null) {
+      throw new HttpException('Invalid ID', HttpStatus.BAD_REQUEST);
+    }
+    return board;
   }
 
   async getAllBoards() {
-    return await this.dataBaseService.GetAllBoard(await this.canvasService.GetCurrentUserID());
+    return await this.dataBaseService.GetAllBoard(
+      await this.canvasService.GetCurrentUserID(),
+    );
   }
 }
