@@ -46,6 +46,7 @@ class DB implements IDB {
     _courseId: number,
     _name: string
   ) {
+    console.log(_name);
     return await this.prisma.row.update({
       where: {
         id: _rowID,
@@ -60,6 +61,14 @@ class DB implements IDB {
             index: await this.GenerateNewIndex(_rowID),
           },
         },
+      },
+    });
+  }
+
+  async GetDefaultRow() {
+    return await this.prisma.row.findFirst({
+      where: {
+        default: true,
       },
     });
   }

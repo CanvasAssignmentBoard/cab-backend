@@ -50,11 +50,20 @@ class AssignmentLogic implements IAssignmentLogic {
   }
 
   async CreateAssignment(assignment: CreateAssignmentBody) {
-    return await this.canvasService.CreateAssignment(
-      assignment.courseID,
-      assignment
+    const data = await this.canvasService.CreateAssignment(
+        assignment.courseID,
+        assignment,
     );
-    
+
+    const rowId = await this.dataBaseService.GetDefaultRow();
+
+    return await this.dataBaseService.CreateAssignment(
+        randomUUID(),
+        rowId.id,
+        data.id,
+        parseInt(String(assignment.courseID)),
+        data.name,
+    );
   }
 }
 export default AssignmentLogic;

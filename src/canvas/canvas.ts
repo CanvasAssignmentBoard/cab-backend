@@ -124,7 +124,7 @@ class Canvas implements ICanvas {
       JSON.stringify(assignment),
     );
     console.log(data);
-    return true;
+    return data;
   }
 
   async GetCurrentUserID() {
