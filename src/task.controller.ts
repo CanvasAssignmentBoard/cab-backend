@@ -16,12 +16,13 @@ import ITaskLogic from './Logic/ITaskLogic';
 import TaskLogic from './Logic/TaskLogic';
 import DB from './Data/db';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import Canvas from './canvas/canvas';
 
 @ApiTags('Task')
 @Controller('Task')
 export class TaskController {
   taskLogic: ITaskLogic;
-  constructor(canvasService: ICanvas, dataBaseService: DB) {
+  constructor(canvasService: Canvas, dataBaseService: DB) {
     this.taskLogic = new TaskLogic(canvasService, dataBaseService);
   }
 
