@@ -3,7 +3,7 @@ export default interface IBS{
 
     UpdateLastBoardUpdate(_id: string, _lastUpdate: string)
     
-    CreateAssignment(_id: string, _rowID: string, _canvasId: number, _courseId: number)
+    CreateAssignment(_id: string, _rowID: string, _canvasId: number, _courseId: number, _name: string)
     
     GetAssignment(_id: string)
     

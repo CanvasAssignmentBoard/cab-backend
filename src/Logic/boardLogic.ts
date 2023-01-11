@@ -65,6 +65,7 @@ export class BoardLogic implements IBoardLogic {
           columnID,
           assignment.canvasID,
           course,
+          assignment.name
         );
       }
     }
