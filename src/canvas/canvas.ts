@@ -4,7 +4,7 @@ import Course from '../models/Course';
 import IAssignment from '../models/IAssignment';
 import Assignment from '../models/Assignment';
 import fetch from 'node-fetch';
-import { ReqCourse, ReqAssignment,ReqUser } from './Types';
+import { ReqCourse, ReqAssignment, ReqUser } from './Types';
 import { Injectable } from '@nestjs/common';
 import CreateAssignmentBody from 'src/Bodies/CreateAssignmentBody';
 
@@ -19,13 +19,13 @@ async function request<TResponse>(
   url: string,
   _body: string,
 ): Promise<TResponse> {
-  let config: RequestInit = {
+  const config: RequestInit = {
     headers: {
       'Content-Type': 'application/json',
       Authorization:
         'Bearer 22661~zjtSTQaieKkQJD6RGzYDooBLZIi3NbwH7jZgaFQTBw9xsnTuQ8PrwuzRLuFW6WwS',
     },
-    body: _body
+    body: _body,
   };
   return fetch(url, config)
     .then((response) => response.json())
@@ -33,21 +33,21 @@ async function request<TResponse>(
 }
 
 async function postrequest<TResponse>(
-    url: string,
-    _body: string,
+  url: string,
+  _body: string,
 ): Promise<TResponse> {
-  let config: RequestInit = {
+  const config: RequestInit = {
     headers: {
       'Content-Type': 'application/json',
       Authorization:
-          'Bearer 22661~zjtSTQaieKkQJD6RGzYDooBLZIi3NbwH7jZgaFQTBw9xsnTuQ8PrwuzRLuFW6WwS',
+        'Bearer 22661~zjtSTQaieKkQJD6RGzYDooBLZIi3NbwH7jZgaFQTBw9xsnTuQ8PrwuzRLuFW6WwS',
     },
     method: 'POST',
-    body: _body
+    body: _body,
   };
   return fetch(url, config)
-      .then((response) => response.json())
-      .then((data) => data as TResponse[]);
+    .then((response) => response.json())
+    .then((data) => data as TResponse[]);
 }
 
 @Injectable()
@@ -70,7 +70,8 @@ class Canvas implements ICanvas {
   async GetAssignments(courseId: number): Promise<Assignment[]> {
     const assignments: Assignment[] = [];
     const data = await request<ReqAssignment>(
-      `${this.host}/courses/` + courseId + '/assignments', null
+      `${this.host}/courses/` + courseId + '/assignments',
+      null,
     );
 
     let i = 0;
@@ -80,7 +81,7 @@ class Canvas implements ICanvas {
       }
       assignments.push(
         new Assignment(
-          "null",
+          'null',
           data[i].name,
           data[i].description,
           data[i].created_at,
@@ -88,7 +89,7 @@ class Canvas implements ICanvas {
           data[i].due_at,
           data[i].course_id,
           data[i].submission,
-          data[i].id
+          data[i].id,
         ),
       );
       i++;
@@ -98,10 +99,14 @@ class Canvas implements ICanvas {
 
   async GetAssignment(id: number, courseId: number): Promise<Assignment> {
     const data = await request<ReqAssignment>(
-      `${this.host}/courses/` + courseId + '/assignments/' + id, null
+      `${this.host}/courses/` + courseId + '/assignments/' + id,
+      null,
     );
+
+    console.log(data);
+
     return new Assignment(
-      "",
+      '',
       data.name,
       data.description,
       data.created_at,
@@ -109,22 +114,21 @@ class Canvas implements ICanvas {
       data.due_at,
       data.course_id,
       0,
-      data.id
+      data.id,
     );
   }
 
-  async CreateAssignment(courseId: number, assignment : CreateAssignmentBody) {
+  async CreateAssignment(courseId: number, assignment: CreateAssignmentBody) {
     const data = await postrequest<ReqAssignment>(
-      `${this.host}/courses/` + courseId + '/assignments/', JSON.stringify(assignment)
+      `${this.host}/courses/` + courseId + '/assignments/',
+      JSON.stringify(assignment),
     );
     console.log(data);
     return true;
   }
 
   async GetCurrentUserID() {
-    const data = await request<ReqUser>(
-      `${this.host}/users/self`, null
-    );
+    const data = await request<ReqUser>(`${this.host}/users/self`, null);
     return data.id;
   }
 
