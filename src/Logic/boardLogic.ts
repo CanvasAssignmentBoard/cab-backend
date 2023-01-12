@@ -72,7 +72,7 @@ export class BoardLogic implements IBoardLogic {
           columnID,
           assignment.canvasID,
           course,
-          assignment.name
+          assignment.name,
         );
       }
     }
@@ -90,22 +90,34 @@ export class BoardLogic implements IBoardLogic {
 
     const board = await this.dataBaseService.GetBoard(boardID);
 
-    const assignments =
-      board.rows.assignments == undefined ? [] : board.rows.assignments;
+    // const assignments =
+    //   board.rows.assignments == undefined ? [] : board.rows.assignments;
+    const assignmentUpdate = new Promise<void>(async (res, rej) => {
+      await board.rows.forEach(async (row, i) => {
+        const assignments = [];
+        const assignmentLoop = new Promise<void>(async (resolve, reject) => {
+          if (row.assignments.length == 0) resolve();
+          row.assignments.forEach(async (a, i, array) => {
+            const ac = await this.canvasService.GetAssignment(
+              a.canvasId,
+              a.courseID,
+            );
+            a.name = ac.name;
+            a.description = ac.description ?? '';
 
-    board.rows.forEach((row) => {
-      row.assignments.forEach(async (a) => {
-        if (!assignments.find((x) => x.canvasID == a.canvasID)) {
-          const ac = await this.canvasService.GetAssignment(
-            a.canvasID,
-            a.courseID,
-          );
-          console.log(ac.name);
-          a.name = ac.name;
-          assignments.push(a);
-        }
+            // console.log(a)
+            assignments.push(a);
+            // console.log(assignments);
+            if (i === array.length - 1) resolve();
+          });
+        });
+
+        await assignmentLoop;
+        board.rows[i].assignments = assignments;
       });
+      res();
     });
+    await assignmentUpdate;
 
     if (board == null) {
       throw new HttpException('Invalid ID', HttpStatus.BAD_REQUEST);

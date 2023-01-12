@@ -32,12 +32,10 @@ export class RowLogic implements IRowLogic {
     const a = await this.dataBaseService.GetAssignment(assignmentID);
 
     if (a.index === index) {
-      console.log('why');
       return;
     }
     const assignments: any[] = [];
     if (a.index < index) {
-      console.log("ai")
       assignments.forEach(async (assignment) => {
         if (assignment.index > a.index && assignment.index <= index) {
           this.dataBaseService.ReorderItem(assignment.id, assignment.index - 1);
@@ -50,14 +48,11 @@ export class RowLogic implements IRowLogic {
         }
       });
     } else {
-      console.log("bi")
-      console.log(assignments)
       assignments.forEach(async (assignment) => {
         if (assignment.index <= a.index && assignment.index > index) {
           console.log(assignment.index);
           this.dataBaseService.ReorderItem(assignment.id, assignment.index + 1);
         } else if (assignment.index == null) {
-          console.log('re');
           this.dataBaseService.ReorderItem(
             assignment.id,
             await this.dataBaseService.GenerateNewIndex(assignment.rowId),

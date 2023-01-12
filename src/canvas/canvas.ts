@@ -103,7 +103,6 @@ class Canvas implements ICanvas {
       null,
     );
 
-    console.log(data);
 
     return new Assignment(
       '',

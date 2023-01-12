@@ -29,6 +29,7 @@ class AssignmentLogic implements IAssignmentLogic {
     console.log(_assignment);
     const tasks = await this.dataBaseService.GetTasks(id);
     if (tasks.length < 1) {
+      console.log(assignment)
       return assignment;
     }
     let _task: Task[];
@@ -46,6 +47,7 @@ class AssignmentLogic implements IAssignmentLogic {
         )
       );
     });
+    
     return new AssignmentWithTasks(_assignment, tasks);
   }
 
