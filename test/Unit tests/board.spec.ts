@@ -3,7 +3,7 @@ import { BoardLogic } from '../../src/Logic/boardLogic';
 import IBoardLogic from '../../src/Logic/IBoardLogic';
 import { BoardCreateBody } from '../../src/Bodies/BoardCreateBody';
 import Prisma from '../../src/Data/Prisma';
-import DB from '../../src/Data/DB';
+import DB from '../../src/Data/db';
 import MockPrisma from '../Mock/MockPrisma';
 import { HttpStatus } from '@nestjs/common';
 import { BadRequestException, HttpException } from '@nestjs/common/exceptions';
