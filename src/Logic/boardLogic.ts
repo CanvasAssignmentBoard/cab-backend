@@ -88,6 +88,10 @@ export class BoardLogic implements IBoardLogic {
       })
     })*/
 
+    if (boardID == undefined) {
+      throw new HttpException('Invalid ID', HttpStatus.BAD_REQUEST);
+    }
+
     const board = await this.dataBaseService.GetBoard(boardID);
 
     // const assignments =
