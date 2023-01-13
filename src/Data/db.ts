@@ -46,7 +46,6 @@ class DB implements IDB {
     _courseId: number,
     _name: string
   ) {
-    console.log(_name);
     return await this.prisma.row.update({
       where: {
         id: _rowID,
