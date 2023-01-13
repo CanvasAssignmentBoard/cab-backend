@@ -59,7 +59,7 @@ describe('Board Logic', () => {
         });
 
         it('GB05: Retrieve board with invalid id return “Invalid boardId”', async () => {
-            await expect(logic.getBoardById("")).rejects.toEqual(new HttpException('Invalid ID', HttpStatus.BAD_REQUEST));
+            await expect(logic.getBoardById(null)).rejects.toEqual(new HttpException('Invalid ID', HttpStatus.BAD_REQUEST));
         });
 
 });

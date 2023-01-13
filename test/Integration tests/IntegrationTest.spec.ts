@@ -19,16 +19,16 @@ describe('Integration test', () => {
                 BoardController,
               ],
               providers: [Prisma, Canvas, DB],
-          }).overrideProvider(Prisma).useClass(MockCanvas).compile();
+          }).overrideProvider(Canvas).useClass(MockCanvas).compile();
       
           app = moduleRef.createNestApplication();
           await app.init();
 
-          await request(app.getHttpServer()).post('/board/create').send({
+          await request(await app.getHttpServer()).post('/board/create').send({
             "name":"test",
             "courses": [123],
             "rows":["testrow"]      
-          }).expect(200)
+          }).expect(201)
 
           app.close();
         });
