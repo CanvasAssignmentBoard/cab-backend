@@ -1,4 +1,4 @@
-name: Tests
+name: TestsOnPush
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
@@ -6,7 +6,7 @@ name: Tests
 # documentation.
 
 on:
-  workflow_call:
+  push:
 jobs:
   tests:
     strategy:
