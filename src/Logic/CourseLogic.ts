@@ -1,8 +1,8 @@
-import ICanvas from "src/canvas/ICanvas";
+import Canvas from "src/canvas/canvas";
 import ICourseLogic from "./ICourseLogic";
 
 class CourseLogic implements ICourseLogic{
-    constructor(private readonly canvasService : ICanvas){
+    constructor(private readonly canvasService : Canvas){
     }
 
     async GetCourses(){

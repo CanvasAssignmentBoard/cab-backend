@@ -1,4 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
+import { AppService } from './app.service';
 import Canvas from './canvas/canvas'
 import ICourseLogic from './Logic/ICourseLogic';
 import CourseLogic from './Logic/CourseLogic';
